@@ -1,0 +1,8 @@
+/venv/
+/.idea/
+/root/.env
+/root/
+/network/.env
+/output/json/*
+/output/logs/*
+/network/chromedriver.exe

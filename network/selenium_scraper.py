@@ -31,8 +31,7 @@ class SeleniumDriver:
 
     def __init__(self):
 
-
-        self.driver = webdriver.Chrome(chrome_driver_path, options=browser_options)
+        self.driver = webdriver.Chrome(options=browser_options)
         self.driver.set_page_load_timeout(10)
         self.logged_in = False
 
@@ -75,9 +74,6 @@ class SeleniumDriver:
             self.driver.execute_script("window.stop();")
         except WebDriverException:
             print("Can't Load Page")
-
-
-
         return self.driver.page_source
 
 
