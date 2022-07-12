@@ -2,6 +2,19 @@
 
 Canvas Bot is a web scraped for the Canvas LMS designed for Alt Media Professionals. It extracts all media content from a given course page as well as all media content from directly linked third party websites that may be important for a particular course. 
 
+To scrape a Canvas LMS Course.
+
+
+````
+# Create a CanvasBot object with the course ID.
+Bot = CanvasBot("330")
+Bot.start()
+
+# all_content_to_json will return the location of the saved JSON file. 
+content = Bot.Content.all_content_to_json()
+````
+
+
 
 An example JSON output of all the instructional content found in a Canvas Course: https://sfsu.box.com/s/rphude4tjily6jba7x8flt6kpeaa9fzd
 

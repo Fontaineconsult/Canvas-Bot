@@ -17,26 +17,3 @@ class CanvasBot:
         self.Content.initialize()
         self.Content.view_canvas_tree()
 
-
-
-
-#
-# for number in range(317,325):
-#
-
-
-Bot = CanvasBot("330")
-Bot.start()
-content = Bot.Content.all_content_to_json()
-
-
-
-
-
-# documents = Bot.Content.get_documents()
-# for each in documents:
-#     print(each)
-
-# image = Bot.Content.get_images()
-# for each in image:
-#     print(each)
