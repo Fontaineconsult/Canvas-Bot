@@ -16,7 +16,7 @@ from sorters.file_content_identifier import canvas_file_content_regex
 from sorters.sorter_re import resource_node_regex
 
 from sorters.sorting_tools import is_url_valid
-print("SDFSDF",resource_node_regex)
+
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
 
@@ -107,7 +107,7 @@ def canvas_resource_identifier(local_session: CanvasSession,
             if bool(match_link):
 
                 node = resource_scaffold_key[match_link.groups()[0]]
-
+                print(root)
                 return node(local_session,
                             match_link.group(),
                             root,

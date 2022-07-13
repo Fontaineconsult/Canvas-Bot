@@ -26,7 +26,7 @@ general_url_verification = re.compile(
     r'(?:/?|[/?]\S+)$', re.IGNORECASE)
 
 
-ignore_links = re.compile(expressions["ignore_links_regex"])
+ignore_links = re_combiner(expressions["ignore_links_regex"])
 
 resource_node_regex = re.compile(expressions["resource_node_re"])
 

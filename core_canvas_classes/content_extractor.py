@@ -11,6 +11,7 @@ def main_dict(**items) -> dict:
         "content_type": items.get("content_type"),
         "course_title": items.get("course_title"),
         "course_id": items.get("course_id"),
+        "course_url": items.get("course_url"),
         "content": list(),
         "count": items.get("count")
 
@@ -20,9 +21,7 @@ def main_dict(**items) -> dict:
 
 def audio_item_dict(**items):
 
-
     audio_item_dict = {
-
 
         "title": items.get("title"),
         "url": items.get("url"),
@@ -150,7 +149,8 @@ class ContentExtractor(CanvasCourseWrapper):
         videos = main_dict(course_id=self.canvas_course_id,
                            course_title=None,
                            content_type="videos",
-
+                           count=len(manifest),
+                           course_url=self.course_page_url
                            )
         count = 0
         for item in manifest:
@@ -180,7 +180,8 @@ class ContentExtractor(CanvasCourseWrapper):
         documents = main_dict(course_id=self.canvas_course_id,
                               course_title=None,
                               content_type="documents",
-                              count=len(manifest)
+                              count=len(manifest),
+                              course_url=self.course_page_url
                               )
         count = 0
         for item in manifest:
@@ -210,7 +211,8 @@ class ContentExtractor(CanvasCourseWrapper):
         images = main_dict(course_id=self.canvas_course_id,
                               course_title=None,
                               content_type="images",
-                              count=len(manifest)
+                              count=len(manifest),
+                              course_url=self.course_page_url
                               )
         count = 0
         for item in manifest:
@@ -240,7 +242,8 @@ class ContentExtractor(CanvasCourseWrapper):
         audio = main_dict(course_id=self.canvas_course_id,
                            course_title=None,
                            content_type="audio",
-                           count=len(manifest)
+                           count=len(manifest),
+                           course_url=self.course_page_url
                            )
         count = 0
         for item in manifest:

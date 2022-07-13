@@ -1,8 +1,6 @@
-import re
-
 from core_canvas_classes.generic_page_node import PageNode
 from network.canvas_session_manager import CanvasSession
-from canvas_page_classes.external_page import ExternalPage
+from additional_page_classes.external_page import ExternalPage
 from sorters.sorting_tools import ignore_url, is_url_valid
 
 

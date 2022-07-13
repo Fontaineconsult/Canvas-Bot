@@ -61,11 +61,3 @@ class CanvasSession:
             return self.SeleniumSession.get_page(url, wait)
         else:
             return self.SeleniumSession.get_page(url)
-
-
-
-test = CanvasSession()
-test.init()
-pages = test.selenium_get("https://sfsu.app.box.com/s/ylowei1xlv5r1tdm1j8rplxgmsyafak5", 10)
-with open("text.txt", "w") as page:
-    page.write(pages)

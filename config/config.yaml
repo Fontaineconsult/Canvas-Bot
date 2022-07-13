@@ -12,6 +12,8 @@ waits:
   Page: 0.5
   Pages: 1
   Quiz: 1
+  Box: 6
+
 
 
 filters:
@@ -33,6 +35,7 @@ filters:
   PagesLinks: {"class": "wiki-page-link"}
   Quiz: {"class": "quiz-header"}
   NavBar: {"id": "breadcrumbs"}
+  Box: "script"
 
 titles:
   Announcements: "title"
@@ -51,6 +54,7 @@ titles:
   Pages: "h1"
   PagesLinks: { "class": "wiki-page-link" }
   Quiz: "h1"
+  Box: "title"
 
 
 requests:
