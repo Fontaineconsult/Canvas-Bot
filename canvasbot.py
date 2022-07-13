@@ -16,4 +16,5 @@ class CanvasBot:
         self.Content = ContentExtractor(self.course_id, self.CanvasSession, **self.kwargs)
         self.Content.initialize()
         self.Content.view_canvas_tree()
+        self.CanvasSession.SeleniumSession.driver.close()
 

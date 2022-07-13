@@ -24,14 +24,14 @@ prefs = {
 browser_options.add_experimental_option(
     "prefs", prefs
 )
-
+browser_options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36")
 
 
 class SeleniumDriver:
 
     def __init__(self):
 
-        self.driver = webdriver.Chrome(options=browser_options)
+        self.driver = webdriver.Chrome(chrome_driver_path, options=browser_options)
         self.driver.set_page_load_timeout(10)
         self.logged_in = False
 
@@ -62,7 +62,6 @@ class SeleniumDriver:
         self.driver.find_element(By.XPATH,"//*[@id='login_form']/div[3]/div[2]/button").click()
 
     def get_page(self, url: str, wait=None, max_timeout=10):
-
         try:
             self.driver.get(url)
             if wait:
