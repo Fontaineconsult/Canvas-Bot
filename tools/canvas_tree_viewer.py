@@ -1,5 +1,6 @@
 from treelib import Node, Tree
-
+import treelib
+import warnings
 
 class CanvasTree:
 
@@ -14,7 +15,11 @@ class CanvasTree:
         node_name = str(node)
         node_value = str(id(node))
         parent = str(id(node.parent))
-        self.tree.create_node(node_name, node_value, parent)
+        try:
+            self.tree.create_node(node_name, node_value, parent)
+        except:
+            warnings.warn(f"Parent node {node.parent} is not in tree. {node} will not be visible")
+
 
     def show_nodes(self):
         return self.tree.show()

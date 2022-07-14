@@ -12,7 +12,7 @@ filters = read_config()['filters']
 items_to_remove = read_config()['sorters']
 titles = read_config()['titles']
 
-class PageNode:
+class PageNode(object):
 
     def __init__(self, session: CanvasSession,
                  url: str,
@@ -53,6 +53,7 @@ class PageNode:
 
             if self.page_manifest.exists(self.url, self):
                 self.node_init_failed = True
+
             if not self.node_init_failed:
                 if "bypass_page_get" not in self.kwargs.keys():
                     self._get_page_html()
@@ -66,6 +67,8 @@ class PageNode:
                     self.create_child_nodes()
             else:
                 print("Bypassing sort for", self.url)
+
+
 
     def _get_page_html(self):
         if "requests_get" in self.kwargs.keys():
@@ -105,8 +108,9 @@ class PageNode:
 
             href_links_to_identify = list(set([a_tag.get('href') for a_tag in self.page_html.find_all('a')]))
             img_links_to_identify = list(set([a_tag.get('src') for a_tag in self.page_html.find_all('img')]))
+            video_tag = list(set([a_tag.get('src') for a_tag in self.page_html.find_all('video')]))
             iframe_links_to_identify = list(set([src_tag.get('src') for src_tag in self.page_html.find_all('iframe')]))
-            self.node_links = href_links_to_identify + iframe_links_to_identify + img_links_to_identify
+            self.node_links = href_links_to_identify + iframe_links_to_identify + img_links_to_identify + video_tag
             self.node_links = [link for link in self.node_links if link not in items_to_remove['first-sort-remove']]
 
         except AttributeError as e:

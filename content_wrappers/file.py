@@ -51,7 +51,7 @@ class ContentImage(Content):
         self.mime_type = get_mime_type(link)
 
     def __str__(self):
-        self.find_alt_tag()
+
         if self.alt_tag:
             return f"( {self.__class__.__name__} - {self.url} ALT:TRUE)"
         else:

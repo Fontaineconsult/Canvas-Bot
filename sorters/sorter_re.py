@@ -10,12 +10,12 @@ load_dotenv(dotenv_path)
 instructure_root = os.environ.get("instructure_root")
 
 expressions = read_re()
-print(expressions["resource_node_re"])
+
 
 def re_combiner(re_list):
 
     raw_string = "|".join(re_list)
-    return re.compile(raw_string)
+    return re.compile(raw_string, re.IGNORECASE)
 
 general_url_verification = re.compile(
     r'^(?:http|ftp)s?://' # http:// or https://

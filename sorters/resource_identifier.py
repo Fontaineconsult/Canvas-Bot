@@ -107,7 +107,7 @@ def canvas_resource_identifier(local_session: CanvasSession,
             if bool(match_link):
 
                 node = resource_scaffold_key[match_link.groups()[0]]
-                print(root)
+
                 return node(local_session,
                             match_link.group(),
                             root,

@@ -33,9 +33,9 @@ def document_file_identifier(link: str, local_session: CanvasSession, parent, ro
     if link is None:
         return None
 
-    if not is_url_valid(link):
-
-        link = create_full_url(link, parent.url)
+    if "allow_incomplete_url_sort" not in parent.kwargs.keys():
+        if not is_url_valid(link):
+            link = create_full_url(link, parent.url)
 
     match_link = document_content_regex.match(link)
     if bool(match_link):
@@ -50,6 +50,10 @@ def video_file_identifier(link: str, local_session: CanvasSession, parent, root)
     if link is None:
         return None
 
+    if "allow_incomplete_url_sort" not in parent.kwargs.keys():
+        if not is_url_valid(link):
+            link = create_full_url(link, parent.url)
+
     match_link = video_file_resources.match(link)
 
     if bool(match_link):
@@ -63,6 +67,10 @@ def audio_file_identifier(link: str, local_session: CanvasSession, parent, root)
 
     if link is None:
         return None
+
+    if "allow_incomplete_url_sort" not in parent.kwargs.keys():
+        if not is_url_valid(link):
+            link = create_full_url(link, parent.url)
 
     match_link = audio_file_resources.match(link)
 
@@ -79,9 +87,14 @@ def image_file_identifier(link: str, local_session: CanvasSession, parent, root)
     if link is None:
         return None
 
+    if "allow_incomplete_url_sort" not in parent.kwargs.keys():
+        if not is_url_valid(link):
+            link = create_full_url(link, parent.url)
+
     match_link = image_content_regex.match(link)
 
     if bool(match_link):
+
 
         return ContentImage(match_link.group(), local_session, parent, root)
     else:
@@ -93,6 +106,8 @@ def canvas_file_indentifier(link: str, local_session: CanvasSession, parent, roo
 
     if link is None:
         return None
+
+
 
     match_link = canvas_file_content_regex.match(link)
     if bool(match_link):
