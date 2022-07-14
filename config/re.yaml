@@ -18,6 +18,7 @@ document_content_regex:
 ignore_links_regex:
   - https://sfsu.instructure.com/courses/[0-9]{0,7}/(pages/|quizzes/|discussion_topics/|assignments/|announcements/|items/|modules/).*.[0-9]{0,7}
   - .*.sfsu.app.box.com/s/.*.
+  - .*.sfsu.box.com/s/.*.
 
 image_content_regex:
   - .*\.jpg
@@ -93,7 +94,7 @@ audio_file_resources_regex:
   - .*\.wav
 
 additional_page_regex:
-  Box: .*.sfsu.app.box.com/s/.*.
+  BoxPage: .*.sfsu.app.box.com/s/.*.|.*.sfsu.box.com/s/.*.
 
 
 additional_ignore_list_regex:

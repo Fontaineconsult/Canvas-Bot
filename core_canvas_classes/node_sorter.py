@@ -103,11 +103,15 @@ def create_child_nodes(self, **kwargs):
                 is_additional_page = additional_page_identifier(self.session,
                                                                 link,
                                                                 self.root,
-                                                                self)
+                                                                self,
+                                                                self.page_manifest,
+                                                                self.content_manifest,
+                                                                self.junk_manifest,
+                                                                **self.kwargs)
 
                 if is_additional_page:
 
-                    self.content_manifest.add_item_to_manifest(is_additional_page)
+                    self.page_manifest.add_item_to_manifest(is_additional_page)
                     self.children.append(is_additional_page)
 
             if "bypass_external_nodes" not in kwargs.keys():

@@ -54,7 +54,8 @@ class PageNode:
             if self.page_manifest.exists(self.url, self):
                 self.node_init_failed = True
             if not self.node_init_failed:
-                self._get_page_html()
+                if "bypass_page_get" not in self.kwargs.keys():
+                    self._get_page_html()
 
                 self.page_manifest.add_item_to_manifest(self)
                 self.root.tree_vis.add_node(self)
