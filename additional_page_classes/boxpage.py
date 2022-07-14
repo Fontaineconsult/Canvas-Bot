@@ -48,7 +48,7 @@ class BoxPage(PageNode):
                 clean_text = script.text.replace("'","")
 
                 items = items_expression.search(clean_text)
-
+                print(items.group())
                 raw_string_dict = f"{{{items.group()}}}"
                 print(raw_string_dict)
                 json_dict = json.loads(raw_string_dict)
