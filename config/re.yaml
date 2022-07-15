@@ -62,6 +62,7 @@ web_video_resources_regex:
   - .*.smartplayer.captionsync.com.*.
   - .*.instructuremedia.com/embed.*.
   - .*.tiktok.com/embed/.*.
+  - .*.sfsu.mediasite.com/.*.
 
 
 

@@ -13,6 +13,7 @@ waits:
   Pages: 1
   Quiz: 1
   BoxPage: 6
+  Discussions: 1
 
 
 
@@ -23,6 +24,8 @@ filters:
   Assignments: {"id": "ag-list"}
   AssignmentsGroup: {"id": "assignment_group_upcoming"}
   Discussion: {"id": "discussion_container"}
+  Discussions: { "class": "discussions-v2__wrapper" }
+  DiscussionsGroup: { "class": "ic-item-row ic-discussion-row" }
   ExternalPage: "body"
   File: {"id": "content"}
   Home: {"class": "show-content user_content clearfix enhanced"}
@@ -36,6 +39,7 @@ filters:
   Quiz: {"class": "quiz-header"}
   NavBar: {"id": "breadcrumbs"}
   BoxPage: "script"
+
 
 titles:
   Announcements: "title"
@@ -55,6 +59,8 @@ titles:
   PagesLinks: { "class": "wiki-page-link" }
   Quiz: "h1"
   BoxPage: "title"
+  Discussions: "title"
+  DiscussionsGroup: "h3"
 
 
 requests:

@@ -1,5 +1,6 @@
 from core_canvas_classes.generic_page_node import PageNode
 from urllib.parse import urljoin, urlparse
+
 class Discussion(PageNode):
 
     def __init__(self, session, url, root, parent, page_manifest: dict, content_manifest: dict, junk_manifest:list, **kwargs):

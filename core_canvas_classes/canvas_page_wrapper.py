@@ -1,4 +1,5 @@
 from canvas_page_classes.announcements import Announcements
+from canvas_page_classes.discussions import Discussions
 from canvas_page_classes.home import Home
 from canvas_page_classes.pages import Pages
 from network.canvas_session_manager import CanvasSession
@@ -26,6 +27,7 @@ class CanvasCourseWrapper:
         self.pages_page_root = None
         self.announcements_page_root = None
         self.home_page_root = None
+        self.discussions_page_root = None
         self.scraper = scraper
         self.kwargs = kwargs
         self.page_manifest = Manifest()
@@ -90,6 +92,17 @@ class CanvasCourseWrapper:
                                        **self.kwargs)
 
 
+    def _init_discussions_root(self):
+        self.discussions_page_root = Discussions(self.scraper,
+                                                     f"{self.course_page_url}/discussion_topics",
+                                                     self.canvas_module_tree_visualization,
+                                                     self,
+                                                     self.page_manifest,
+                                                     self.content_manifest,
+                                                     self.junk_manifest,
+                                                     **self.kwargs)
+
+
     def initialize(self):
         self.canvas_module_tree_visualization.init_node(self)
 
@@ -103,7 +116,8 @@ class CanvasCourseWrapper:
             self._init_pages_root()
         if not self.kwargs.get("ignore_announcements") is True:
             self._init_announcements_root()
-
+        if not self.kwargs.get("ignore_discussions") is True:
+            self._init_discussions_root()
     def add_node_to_tree_vis(self, node):
         self.canvas_module_tree_visualization.add_node(node)
 
