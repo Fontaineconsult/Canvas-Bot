@@ -25,7 +25,6 @@ class BoxPage(PageNode):
                           page_manifest,
                           content_manifest,
                           junk_manifest,
-
                           requests_get=True,
                           bypass_sort=True,
                           allow_incomplete_url_sort=True,
