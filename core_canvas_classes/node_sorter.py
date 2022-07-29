@@ -40,7 +40,6 @@ def create_child_nodes(self, **kwargs):
                     self.content_manifest.add_item_to_manifest(is_web_video)
                     self.children.append(is_web_video)
 
-
             if "bypass_web_audio_nodes" not in kwargs.keys():
                 is_web_audio = web_audio_identifier(link, self.session, self, self.root)
                 if is_web_audio:
@@ -48,14 +47,12 @@ def create_child_nodes(self, **kwargs):
                     self.content_manifest.add_item_to_manifest(is_web_audio)
                     self.children.append(is_web_audio)
 
-
             if "bypass_document_file_nodes" not in kwargs.keys():
                 is_file = document_file_identifier(link, self.session, self, self.root)
                 if is_file:
 
                     self.content_manifest.add_item_to_manifest(is_file)
                     self.children.append(is_file)
-
 
             if "bypass_canvas_file_nodes" not in kwargs.keys():
                 is_canvas_file = canvas_file_indentifier(link, self.session, self, self.root)
@@ -73,14 +70,12 @@ def create_child_nodes(self, **kwargs):
                     self.content_manifest.add_item_to_manifest(is_canvas_user_file)
                     self.children.append(is_canvas_user_file)
 
-
             if "bypass_video_file_nodes" not in kwargs.keys():
                 is_video_file = video_file_identifier(link, self.session, self, self.root)
                 if is_video_file:
 
                     self.content_manifest.add_item_to_manifest(is_video_file)
                     self.children.append(is_video_file)
-
 
             if "bypass_audio_file_nodes" not in kwargs.keys():
                 is_audio_file = audio_file_identifier(link, self.session, self, self.root)
@@ -89,14 +84,12 @@ def create_child_nodes(self, **kwargs):
                     self.content_manifest.add_item_to_manifest(is_audio_file)
                     self.children.append(is_audio_file)
 
-
             if "bypass_image_file_nodes" not in kwargs.keys():
                 is_image_file = image_file_identifier(link, self.session, self, self.root)
                 if is_image_file:
 
                     self.content_manifest.add_item_to_manifest(is_image_file)
                     self.children.append(is_image_file)
-
 
             if "bypass_additional_nodes" not in kwargs.keys():
 

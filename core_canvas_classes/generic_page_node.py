@@ -68,8 +68,6 @@ class PageNode(object):
             else:
                 print("Bypassing sort for", self.url)
 
-
-
     def _get_page_html(self):
         if "requests_get" in self.kwargs.keys():
             page_request = self.session.requests_get(self.url)

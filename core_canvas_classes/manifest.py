@@ -44,7 +44,6 @@ class Manifest:
         for item in self.manifest:
             print(item, self.manifest[item])
 
-
     def get_content(self):
         return_list = list()
         for item in self.manifest.keys():
