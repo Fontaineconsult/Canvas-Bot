@@ -107,6 +107,8 @@ class ContentCanvasFile(Content):
     def __init__(self, link: str, local_session: CanvasSession, parent, root):
         self.page_html = None
         self.title = None
+        self.downloadable = True
+        self.is_document = True
         self.session = local_session
         self.url = link
         self._get_page_html()
@@ -114,8 +116,7 @@ class ContentCanvasFile(Content):
         Content.__init__(self, link, local_session, parent, root, self.title)
         self.download_url = "{}/{}".format(link, "download")
         self.get_data_from_header()
-        self.downloadable = True
-        self.is_document = True
+
 
 
 
@@ -123,17 +124,23 @@ class ContentCanvasFile(Content):
         return f"( {self.__class__.__name__} - {self.url} - {self.title} )>"
 
     def _get_page_html(self):
+        page_request = self.session.requests_get(self.url)
+        if page_request:
+            self.page_html = page_request.content
+        else:
+            self.downloadable = False
 
-        self.page_html = self.session.requests_get(self.url).content
+
 
     def get_data_from_header(self):
-        self.header = self.session.requests_header(self.download_url).headers
-
-        if self.header['Status'] == '302 Found':
-            self.resource_location = self.header['location']
-            self.mime_type = get_mime_type(self.resource_location)
-        else:
-            print(f"{Fore.LIGHTRED_EX}No Download Location found for {self.url}{Style.RESET_ALL}")
+        self.header = self.session.requests_header(self.download_url)
+        if self.header:
+            self.header = self.header.headers
+            if self.header['Status'] == '302 Found':
+                self.resource_location = self.header['location']
+                self.mime_type = get_mime_type(self.resource_location)
+            else:
+                print(f"{Fore.LIGHTRED_EX}No Download Location found for {self.url}{Style.RESET_ALL}")
 
     def set_documement_type(self):
         pass
@@ -143,9 +150,10 @@ class ContentCanvasFile(Content):
             return self.session.requests_get(self.header['location']).content
 
     def find_title(self):
-        try:
-            self.title = BeautifulSoup(self.page_html, "html.parser").find('h2').text
-        except AttributeError:
-            print("No H2 tag found in CanvasFile page", self.url)
+        if self.downloadable:
+            try:
+                self.title = BeautifulSoup(self.page_html, "html.parser").find('h2').text
+            except AttributeError:
+                print("No H2 tag found in CanvasFile page", self.url)
 
 

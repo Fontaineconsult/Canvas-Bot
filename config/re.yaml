@@ -103,5 +103,6 @@ additional_ignore_list_regex:
   - .*.download.*.
   - .*.search/rubrics.*.
   - .*.khanacademy.org.*.
+  - https://www.avi
 
 
