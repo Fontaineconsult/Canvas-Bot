@@ -8,5 +8,6 @@ def run(course_id):
 if __name__ == '__main__':
 
     sys.path.append(r"C:\Users\913678186\IdeaProjects\Canvas-Bot")
+    sys.path.append(r"C:\Users\DanielPC\Desktop\Servers\Canvas-Bot")
     from canvasbot import CanvasBot
     run(int(sys.argv[1]))
