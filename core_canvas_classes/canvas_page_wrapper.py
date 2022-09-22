@@ -28,6 +28,7 @@ class CanvasCourseWrapper:
         self.announcements_page_root = None
         self.home_page_root = None
         self.discussions_page_root = None
+        self.root_node = True
         self.scraper = scraper
         self.kwargs = kwargs
         self.page_manifest = Manifest()

@@ -28,6 +28,7 @@ class PageComponentNode:
                  **kwargs):
 
         self.root = root
+        self.root_node = False
         self.parent = parent
         self.children = list()
         self.session = session

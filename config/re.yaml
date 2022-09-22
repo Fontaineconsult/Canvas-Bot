@@ -66,6 +66,7 @@ web_video_resources_regex:
 
 
 
+
 video_file_resources_regex:
   - .*\.mp4
   - .*\.mpg
@@ -84,6 +85,7 @@ web_audio_resources_regex:
   - .*./audio/.*.
   - .*./podcasts/.*.
   - .*./podcast/.*.
+  - .*./episode/.*.
 
 audio_file_resources_regex:
   - .*\.m4a

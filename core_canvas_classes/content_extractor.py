@@ -4,17 +4,32 @@ from core_canvas_classes.canvas_page_wrapper import CanvasCourseWrapper
 import datetime
 
 
+def build_path(node):
+    print("GETTING TIME")
+
+
+    path_list = []
+    def get_parent(node):
+        print(node.__class__.__name__)
+        path_list.append(node.__class__.__name__)
+        print(node.root_node)
+        if not node.root_node:
+            get_parent(node.parent)
+
+    path_list.append(node.title)
+    get_parent(node.parent)
+    print(path_list)
+
+
 def main_dict(**items) -> dict:
 
     main_dict = {
-
         "content_type": items.get("content_type"),
         "course_title": items.get("course_title"),
         "course_id": items.get("course_id"),
         "course_url": items.get("course_url"),
         "content": list(),
         "count": items.get("count")
-
     }
     return main_dict
 
@@ -176,6 +191,7 @@ class ContentExtractor(CanvasCourseWrapper):
         return videos
 
     def get_documents_to_json(self, save=False):
+
         manifest = self.content_manifest.get_content()
         documents = main_dict(course_id=self.canvas_course_id,
                               course_title=None,
@@ -185,6 +201,7 @@ class ContentExtractor(CanvasCourseWrapper):
                               )
         count = 0
         for item in manifest:
+            build_path(item)
             if item.is_document:
                 count += 1
                 documents['content'].append(documents_item_dict(
@@ -298,7 +315,7 @@ class ContentExtractor(CanvasCourseWrapper):
 
         with open(filename, 'w') as f:
             f.write(content)
-
+            f.close()
         return filename
 
 
