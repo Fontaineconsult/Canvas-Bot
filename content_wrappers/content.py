@@ -18,6 +18,7 @@ class Content:
         self.is_document = False
         self.is_image = False
         self.tail = True
+        self.root_node = False
         self.downloadable = False
         self.is_hidden = False
         self.order = 0

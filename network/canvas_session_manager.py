@@ -38,6 +38,8 @@ class CanvasSession:
             request = self.RequestsSession.get(url, verify=False, headers=headers, timeout=10)
             if not request.ok:
                 print(f"{Fore.LIGHTRED_EX}Request Received Code: {request.status_code} {url}{Style.RESET_ALL}")
+                if request.status_code == 400:
+                    print(request.content)
                 return None
             return request
 

@@ -24,6 +24,7 @@ class PageNode(object):
                  **kwargs):
 
         self.root = root
+        self.root_node = False
         self.title = None
         self.parent = parent
         self.children = list()

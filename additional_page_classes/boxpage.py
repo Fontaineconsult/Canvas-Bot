@@ -3,10 +3,8 @@ import json
 from colorama import Fore, Style
 from bs4 import BeautifulSoup
 import re
-
 from core_canvas_classes.generic_page_node import PageNode
 from core_canvas_classes.node_sorter import create_child_nodes
-
 from config.read import read_config
 
 filters = read_config()['filters']
@@ -43,7 +41,7 @@ class BoxPage(PageNode):
 
         page_request = self.session.requests_get(self.url)
         if page_request:
-            self.page_html = BeautifulSoup(page_request.content)
+            self.page_html = BeautifulSoup(page_request.content, features="lxml")
 
             page_scripts = self.page_html.find_all(filters[self.__class__.__name__])
             expression = re.compile("Box\.postStreamData")
