@@ -4,22 +4,30 @@ from core_canvas_classes.canvas_page_wrapper import CanvasCourseWrapper
 import datetime
 
 
-def build_path(node):
+def build_path(node) -> list:
     print("GETTING TIME")
-
 
     path_list = []
     def get_parent(node):
+
         print(node.__class__.__name__)
-        path_list.append(node.__class__.__name__)
+
+        if node.root_node:
+            path_list.append(node.__class__.__name__)
+        else:
+            if node.title == 'You need to have JavaScript enabled in order to access this site.':
+                path_list.append(node.__class__.__name__)
+            else:
+                path_list.append(node.title)
         print(node.root_node)
+
         if not node.root_node:
             get_parent(node.parent)
 
     path_list.append(node.title)
     get_parent(node.parent)
     print(path_list)
-
+    return path_list
 
 def main_dict(**items) -> dict:
 
@@ -70,7 +78,8 @@ def documents_item_dict(**items):
         "content_type": items.get("content_type"),
         "mime_type": items.get("mime_type"),
         "order": items.get("order"),
-        "downloadable": items.get("downloadable")
+        "downloadable": items.get("downloadable"),
+        "path": items.get('path'),
 
     }
     return document_item_dict
@@ -201,8 +210,9 @@ class ContentExtractor(CanvasCourseWrapper):
                               )
         count = 0
         for item in manifest:
-            build_path(item)
+
             if item.is_document:
+                build_path(item)
                 count += 1
                 documents['content'].append(documents_item_dict(
                     title=item.title,
@@ -215,7 +225,8 @@ class ContentExtractor(CanvasCourseWrapper):
                     content_type=item.__class__.__name__,
                     mime_type=item.mime_type,
                     downloadable=item.downloadable,
-                    order=item.order
+                    order=item.order,
+                    path=build_path(item),
                 ))
         documents['count'] = count
         if save:
