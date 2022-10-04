@@ -5,7 +5,7 @@
 
 
 echo %MYVAR%
-
+taskkill /IM "chromedriver.exe" /F
 DEL C:\Users\913678186\IdeaProjects\Canvas-Bot\bat\output.txt
 @IF %ERRORLEVEL% NEQ 0 PAUSE
 
