@@ -76,8 +76,7 @@ class SeleniumDriver:
         return self.driver.page_source
 
 
-
-
-
+    def close_driver(self):
+        self.driver.close()
 
 
