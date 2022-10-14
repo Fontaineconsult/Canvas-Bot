@@ -71,18 +71,20 @@ class PageNode(object):
 
     def _get_page_html(self):
         if "requests_get" in self.kwargs.keys():
+            print("ASDASDA")
             page_request = self.session.requests_get(self.url)
-
+            print("REQUEST11111", page_request)
             if page_request:
                 self.page_html = BeautifulSoup(page_request.content, "html.parser")
                 self.get_title()
-
+                print("REQUEST1", page_request)
                 if isinstance(self.scraper, str):
                     self.page_html = self.page_html.find(self.scraper)
                 else:
                     self.page_html = self.page_html.find(attrs=self.scraper)
 
             if not page_request or not self.page_html:
+
                 print(f"{Fore.LIGHTYELLOW_EX}Request Filtering Failed, Switching to Selenium {self.url}{Style.RESET_ALL}")
                 self.page_html = BeautifulSoup(self.session.selenium_get(self.url, wait_timers[self.__class__.__name__]), "html.parser")
                 self.get_title()
@@ -90,10 +92,12 @@ class PageNode(object):
                     self.page_html = self.page_html.find(self.scraper)
                 else:
                     self.page_html = self.page_html.find(attrs=self.scraper)
+
             if self.page_html is None:
                 print(f"{Fore.LIGHTRED_EX}No Page HTML {self.url}{Style.RESET_ALL}")
                 self.node_init_failed = True
         else:
+            print(self.url, "HERE")
             self.page_html = BeautifulSoup(self.session.selenium_get(self.url, wait_timers[self.__class__.__name__]), "html.parser")
             self.get_title()
             self.page_html = self.page_html.find(attrs=self.scraper)

@@ -23,7 +23,7 @@ class ContentFile(Content):
         Content.__init__(self, link, local_session, parent, root)
         self.downloadable = True
         self.is_document = True
-        self.mime_type = get_mime_type(link)
+
 
 
 class ContentVideo(Content):
@@ -31,7 +31,7 @@ class ContentVideo(Content):
         Content.__init__(self, link, local_session, parent, root)
         self.downloadable = True
         self.is_video = True
-        self.mime_type = get_mime_type(link)
+
 
 
 class ContentAudio(Content):
@@ -48,7 +48,7 @@ class ContentImage(Content):
         Content.__init__(self, link, local_session, parent, root)
         self.downloadable = True
         self.is_image = True
-        self.mime_type = get_mime_type(link)
+
 
     def __str__(self):
 
@@ -71,7 +71,7 @@ class ContentDocument(Content):
         Content.__init__(self, link, local_session, parent, root)
         self.downloadable = True
         self.is_document = True
-        self.mime_type = get_mime_type(link)
+
 
 
 class ContentUserCanvasFile(Content):
@@ -109,12 +109,12 @@ class ContentCanvasFile(Content):
         self.url = link
         self._get_page_html()
         self.title = None
-        self.downloadable = True
         self.find_title()
         Content.__init__(self, link, local_session, parent, root, self.title)
+
         self.page_html = None
         self.is_document = True
-        self.download_url = "{}{}".format(link, "download")
+        self.resource_location = "{}{}".format(link, "download")
         self.get_data_from_header()
 
 
@@ -133,23 +133,20 @@ class ContentCanvasFile(Content):
 
 
     def get_data_from_header(self):
-        self.header = self.session.requests_header(self.download_url)
+        self.header = self.session.requests_header(self.resource_location)
         if self.header:
             self.header = self.header.headers
             if self.header['Status'] == '302 Found':
-                self.resource_location = "{}{}".format(self.url, "download")
-                self.mime_type = get_mime_type(self.resource_location)
+                print(self.header)
+                self.mime_type = get_mime_type(self.header['location'])
             else:
                 print(f"{Fore.LIGHTRED_EX}No Download Location found for {self.url}{Style.RESET_ALL}")
 
     def set_documement_type(self):
         pass
 
-    def download(self):
-        if self.downloadable:
-            return self.session.requests_get(self.header['location']).content
-
     def find_title(self):
+        self.downloadable = True
         if self.downloadable:
             try:
                 self.title = BeautifulSoup(self.page_html, "html.parser").find('h2').text

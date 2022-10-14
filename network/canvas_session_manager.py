@@ -39,7 +39,7 @@ class CanvasSession:
             if not request.ok:
                 print(f"{Fore.LIGHTRED_EX}Request Received Code: {request.status_code} {url}{Style.RESET_ALL}")
                 if request.status_code == 400:
-                    print(request.content)
+                    print(request.content, request.headers)
                 return None
             return request
 
