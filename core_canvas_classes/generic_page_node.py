@@ -4,7 +4,6 @@ from bs4 import BeautifulSoup
 from config.read import read_config
 from core_canvas_classes.node_sorter import create_child_nodes
 from core_canvas_classes.manifest import Manifest
-import time
 from colorama import Fore, Style
 
 wait_timers = read_config()['waits']
