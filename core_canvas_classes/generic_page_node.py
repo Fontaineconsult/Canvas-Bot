@@ -71,13 +71,10 @@ class PageNode(object):
 
     def _get_page_html(self):
         if "requests_get" in self.kwargs.keys():
-            print("ASDASDA")
             page_request = self.session.requests_get(self.url)
-            print("REQUEST11111", page_request)
             if page_request:
                 self.page_html = BeautifulSoup(page_request.content, "html.parser")
                 self.get_title()
-                print("REQUEST1", page_request)
                 if isinstance(self.scraper, str):
                     self.page_html = self.page_html.find(self.scraper)
                 else:
@@ -97,7 +94,6 @@ class PageNode(object):
                 print(f"{Fore.LIGHTRED_EX}No Page HTML {self.url}{Style.RESET_ALL}")
                 self.node_init_failed = True
         else:
-            print(self.url, "HERE")
             self.page_html = BeautifulSoup(self.session.selenium_get(self.url, wait_timers[self.__class__.__name__]), "html.parser")
             self.get_title()
             self.page_html = self.page_html.find(attrs=self.scraper)
@@ -114,6 +110,9 @@ class PageNode(object):
             video_tag = list(set([a_tag.get('src') for a_tag in self.page_html.find_all('video')]))
             iframe_links_to_identify = list(set([src_tag.get('src') for src_tag in self.page_html.find_all('iframe')]))
             self.node_links = href_links_to_identify + iframe_links_to_identify + img_links_to_identify + video_tag
+
+
+
             self.node_links = [link for link in self.node_links if link not in items_to_remove['first-sort-remove']]
 
         except AttributeError as e:

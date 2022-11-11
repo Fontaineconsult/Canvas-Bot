@@ -75,3 +75,6 @@ sorters:
               - "#"
               - "http://None"
 
+  first-sort-remove-regexs:
+              - "https://sfsu.instructure.com/courses/\d{0,10}/users/\d{0,10}"
+
