@@ -1,5 +1,18 @@
+import mimetypes
+from urllib.parse import urljoin, urlparse
+
 from network.canvas_session_manager import CanvasSession
 from core_canvas_classes.generic_page_node import PageNode
+
+
+def get_mime_type(link):
+
+    clean_url = urljoin(link, urlparse(link).path)
+    mime_type = mimetypes.MimeTypes().guess_type(clean_url)[0]
+    if mime_type is None:
+        return 'text/plain'
+    return mime_type
+
 
 
 class Content:
@@ -23,6 +36,7 @@ class Content:
         self.is_hidden = False
         self.order = 0
         self.children = list()
+        self.mime_type = get_mime_type(link)
         self._init_node()
 
     def __str__(self):

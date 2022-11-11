@@ -212,7 +212,6 @@ class ContentExtractor(CanvasCourseWrapper):
         for item in manifest:
 
             if item.is_document:
-                build_path(item)
                 count += 1
                 documents['content'].append(documents_item_dict(
                     title=item.title,

@@ -54,6 +54,7 @@ def canvas_resource_identifier(local_session: CanvasSession,
                         return None
 
                 get_url = local_session.requests_get(link)
+                print("SDFSDFSDFSDF", get_url, link)
                 if get_url:
                     if len(get_url.history) == 0:
 
