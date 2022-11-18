@@ -2,7 +2,7 @@ import yaml
 import os
 
 def read_config():
-    with open(os.path.join(os.path.dirname(os.path.realpath(__file__)),"config.yaml"), "r") as f:
+    with open(os.path.join(os.path.dirname(os.path.realpath(__file__)),"config.yaml"), "r", encoding='utf_8') as f:
         return yaml.safe_load(f)
 
 

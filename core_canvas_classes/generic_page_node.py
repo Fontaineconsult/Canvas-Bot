@@ -7,6 +7,8 @@ from core_canvas_classes.manifest import Manifest
 import time
 from colorama import Fore, Style
 
+from sorters.first_sort_remove import links_to_remove
+
 wait_timers = read_config()['waits']
 filters = read_config()['filters']
 items_to_remove = read_config()['sorters']
@@ -111,9 +113,7 @@ class PageNode(object):
             iframe_links_to_identify = list(set([src_tag.get('src') for src_tag in self.page_html.find_all('iframe')]))
             self.node_links = href_links_to_identify + iframe_links_to_identify + img_links_to_identify + video_tag
 
-
-
-            self.node_links = [link for link in self.node_links if link not in items_to_remove['first-sort-remove']]
+            self.node_links = links_to_remove(self.node_links)
 
         except AttributeError as e:
             print(f"{Fore.LIGHTRED_EX}Sort Failed {self.url} - {e}{Style.RESET_ALL}")
