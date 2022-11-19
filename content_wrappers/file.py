@@ -111,6 +111,7 @@ class ContentCanvasFile(Content):
         self.url = link
         self._get_page_html()
         self.title = None
+        self.alt_tag = None
         self.find_title()
         Content.__init__(self, link, local_session, parent, root, self.title)
 
@@ -146,6 +147,10 @@ class ContentCanvasFile(Content):
         if mime_check_image.search(self.mime_type):
             self.is_document = False
             self.is_image = True
+
+    def find_alt_tag(self):
+        pass
+
 
     def find_title(self):
         self.downloadable = True
