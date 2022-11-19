@@ -7,6 +7,8 @@ from content_wrappers.content import Content
 from network.canvas_session_manager import CanvasSession
 from bs4 import BeautifulSoup
 
+from sorters.sorter_re import mime_check_image
+
 
 def get_mime_type(link):
 
@@ -116,9 +118,7 @@ class ContentCanvasFile(Content):
         self.is_document = True
         self.resource_location = "{}{}".format(link, "download")
         self.get_data_from_header()
-
-
-
+        self.set_documement_type()
 
     def __str__(self):
         return f"( {self.__class__.__name__} - {self.url} - {self.title} )>"
@@ -129,7 +129,6 @@ class ContentCanvasFile(Content):
             self.page_html = page_request.content
         else:
             self.downloadable = False
-
 
 
     def get_data_from_header(self):
@@ -143,7 +142,10 @@ class ContentCanvasFile(Content):
                 print(f"{Fore.LIGHTRED_EX}No Download Location found for {self.url}{Style.RESET_ALL}")
 
     def set_documement_type(self):
-        pass
+
+        if mime_check_image.search(self.mime_type):
+            self.is_document = False
+            self.is_image = True
 
     def find_title(self):
         self.downloadable = True
