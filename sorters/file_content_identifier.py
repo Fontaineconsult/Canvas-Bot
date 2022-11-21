@@ -107,8 +107,6 @@ def canvas_file_indentifier(link: str, local_session: CanvasSession, parent, roo
     if link is None:
         return None
 
-
-
     match_link = canvas_file_content_regex.match(link)
     if bool(match_link):
         return ContentCanvasFile(match_link.group(), local_session, parent, root)

@@ -12,6 +12,16 @@ instructure_root = os.environ.get("instructure_root")
 expressions = read_re()
 
 
+def mime_check(re_list):
+
+    raw = [item.strip('.*\\.') for item in re_list]
+    raw_string = "|".join(raw)
+    return re.compile(raw_string, re.IGNORECASE)
+
+
+
+
+
 def re_combiner(re_list):
 
     raw_string = "|".join(re_list)
@@ -48,4 +58,7 @@ audio_file_resources = re_combiner(expressions["audio_file_resources_regex"])
 
 additional_ignore_list = re_combiner(expressions["additional_ignore_list_regex"])
 
+mime_check_image = mime_check(expressions["image_content_regex"])
+
+mime_check_document = mime_check(expressions["document_content_regex"])
 
