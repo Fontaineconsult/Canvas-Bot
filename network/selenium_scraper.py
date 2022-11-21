@@ -1,3 +1,4 @@
+import urllib3
 from selenium import webdriver
 from dotenv import load_dotenv
 import os
@@ -71,6 +72,10 @@ class SeleniumDriver:
         except TimeoutException:
             print("Stopping Javascript")
             self.driver.execute_script("window.stop();")
+
+        except urllib3.exceptions.ProtocolError as e:
+            print(e)
+
         except WebDriverException:
             print("Can't Load Page")
         return self.driver.page_source

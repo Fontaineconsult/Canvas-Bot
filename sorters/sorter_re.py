@@ -18,10 +18,6 @@ def mime_check(re_list):
     raw_string = "|".join(raw)
     return re.compile(raw_string, re.IGNORECASE)
 
-
-
-
-
 def re_combiner(re_list):
 
     raw_string = "|".join(re_list)

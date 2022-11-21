@@ -13,12 +13,10 @@ def links_to_remove(links) -> list:
 
     regex = re_combiner(items_to_remove['first-sort-remove-regexs'])
 
-    second_pass  = [link for link in first_pass if not regex.match(link)]
-
+    second_pass = [link for link in first_pass if not regex.match(link)]
 
     return second_pass
 
 
 
 
-print(re_combiner(items_to_remove['first-sort-remove-regexs']))

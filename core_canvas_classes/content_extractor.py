@@ -4,30 +4,45 @@ from core_canvas_classes.canvas_page_wrapper import CanvasCourseWrapper
 import datetime
 
 
-def build_path(node) -> list:
-    print("GETTING TIME")
+def build_path(node, content_type) -> list:
 
     path_list = []
-    def get_parent(node):
+    def get_parent(node, content_type):
 
-        print(node.__class__.__name__)
 
-        if node.root_node:
-            path_list.append(node.__class__.__name__)
-        else:
-            if node.title == 'You need to have JavaScript enabled in order to access this site.':
+        if content_type == 'title':
+
+            if node.root_node:
                 path_list.append(node.__class__.__name__)
             else:
-                path_list.append(node.title)
-        print(node.root_node)
+                if node.title == 'You need to have JavaScript enabled in order to access this site.':
+                    path_list.append(node.__class__.__name__)
+                else:
+                    path_list.append(node.title)
 
-        if not node.root_node:
-            get_parent(node.parent)
+            if not node.root_node:
+                get_parent(node.parent, content_type)
 
-    path_list.append(node.title)
-    get_parent(node.parent)
-    print(path_list)
-    return path_list
+            # path_list.append(node.title)
+            # get_parent(node.parent, content_type)
+
+
+
+
+        if content_type == 'uri':
+            if node.root_node:
+                path_list.append(node.__class__.__name__)
+
+            if not node.root_node:
+                path_list.append(node.url)
+                get_parent(node.parent, content_type)
+
+            # path_list.append(node.url)
+            # get_parent(node.parent, content_type)
+
+
+    get_parent(node, content_type)
+    return list(set(path_list))
 
 def main_dict(**items) -> dict:
 
@@ -56,7 +71,9 @@ def audio_item_dict(**items):
         "content_type": items.get("title"),
         "mime_type": items.get("mime_type"),
         "order": items.get("order"),
-        "downloadable": items.get("downloadable")
+        "downloadable": items.get("downloadable"),
+        "title_path": items.get("title_path"),
+        "uri_path": items.get("uri_path")
 
     }
 
@@ -80,6 +97,8 @@ def documents_item_dict(**items):
         "order": items.get("order"),
         "downloadable": items.get("downloadable"),
         "path": items.get('path'),
+        "title_path": items.get("title_path"),
+        "uri_path": items.get("uri_path")
 
     }
     return document_item_dict
@@ -99,7 +118,9 @@ def video_item_dict(**items):
         "content_type": items.get("content_type"),
         "mime_type": items.get("mime_type"),
         "order": items.get("order"),
-        "downloadable": items.get("downloadable")
+        "downloadable": items.get("downloadable"),
+        "title_path": items.get("title_path"),
+        "uri_path": items.get("uri_path")
 
     }
     return video_item_dict
@@ -119,7 +140,9 @@ def image_item_dict(**items):
         "content_type": items.get("content_type"),
         "alt_tag_present": items.get("alt_tag_present"),
         "order": items.get("order"),
-        "downloadable": items.get("downloadable")
+        "downloadable": items.get("downloadable"),
+        "title_path": items.get("title_path"),
+        "uri_path": items.get("uri_path")
 
     }
 
@@ -191,7 +214,9 @@ class ContentExtractor(CanvasCourseWrapper):
                     content_type=item.__class__.__name__,
                     downloadable=item.downloadable,
                     mime_type=item.mime_type if item.downloadable is True else None,
-                    order=item.order
+                    order=item.order,
+                    title_path=build_path(item, "title"),
+                    uri_path=build_path(item, "uri")
                 ))
         videos['count'] = count
         if save:
@@ -225,7 +250,8 @@ class ContentExtractor(CanvasCourseWrapper):
                     mime_type=item.mime_type,
                     downloadable=item.downloadable,
                     order=item.order,
-                    path=build_path(item),
+                    title_path=build_path(item, "title"),
+                    uri_path=build_path(item, "uri"),
                 ))
         documents['count'] = count
         if save:
@@ -256,7 +282,9 @@ class ContentExtractor(CanvasCourseWrapper):
                     mime_type=item.mime_type,
                     alt_tag_present=item.alt_tag,
                     downloadable=item.downloadable,
-                    order=item.order
+                    order=item.order,
+                    title_path=build_path(item, "title"),
+                    uri_path=build_path(item, "uri")
                 ))
         images['count'] = count
         if save:
@@ -287,6 +315,8 @@ class ContentExtractor(CanvasCourseWrapper):
                     mime_type=item.mime_type if item.downloadable is True else None,
                     order=item.order,
                     downloadable=item.downloadable,
+                    title_path=build_path(item, "title"),
+                    uri_path=build_path(item, "uri")
                 ))
         audio['count'] = count
 
