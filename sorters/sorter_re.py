@@ -52,6 +52,8 @@ web_audio_resources = re_combiner(expressions["web_audio_resources_regex"])
 
 audio_file_resources = re_combiner(expressions["audio_file_resources_regex"])
 
+google_doc_regex = re_combiner(expressions["web_document_applications_regex"])
+
 additional_ignore_list = re_combiner(expressions["additional_ignore_list_regex"])
 
 mime_check_image = mime_check(expressions["image_content_regex"])

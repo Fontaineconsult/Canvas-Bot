@@ -65,8 +65,6 @@ web_video_resources_regex:
   - .*.sfsu.mediasite.com/.*.
 
 
-
-
 video_file_resources_regex:
   - .*\.mp4
   - .*\.mpg
@@ -95,6 +93,12 @@ audio_file_resources_regex:
   - .*\.aac
   - .*\.aiff
   - .*\.wav
+
+
+web_document_applications_regex:
+  - https://docs.google.com/document/d/.*.
+  - https://docs.google.com/presentation/d/.*.
+
 
 additional_page_regex:
   BoxPage: .*.sfsu.app.box.com/s/.*.|.*.sfsu.box.com/s/.*.

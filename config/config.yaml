@@ -4,6 +4,7 @@ waits:
   Assignments: 1
   Discussion: 1
   ExternalPage: 2
+  GoogleDocument: 4
   File: 0
   Home: 0
   Item: 0.5
@@ -27,6 +28,7 @@ filters:
   Discussions: { "class": "discussions-v2__wrapper" }
   DiscussionsGroup: { "class": "ic-item-row ic-discussion-row" }
   ExternalPage: "body"
+  GoogleDocument: "reek"
   File: {"id": "content"}
   Home: {"class": "show-content user_content clearfix enhanced"}
   HomeFull: {"id": "wiki_page_show"}
@@ -49,6 +51,7 @@ titles:
   AssignmentsGroup: "h2"
   Discussion: "h1"
   ExternalPage: "title"
+  GoogleDocument: "title"
   File: "h2"
   Home: "title"
   Item: "title"

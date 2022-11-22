@@ -1,5 +1,6 @@
 
 
+
 def create_child_nodes(self, **kwargs):
 
     from sorters.file_content_identifier import document_file_identifier,\
@@ -9,6 +10,7 @@ def create_child_nodes(self, **kwargs):
     from sorters.url_content_identifier import web_video_identifier, web_audio_identifier
     from sorters.file_content_identifier import canvas_user_file_identifer
     from sorters.additional_page_identifers import additional_page_identifier
+    from sorters.external_resource_identifier import google_doc_identifier
 
     from core_canvas_classes.generic_page_node import PageNode
     for count, link in enumerate(self.node_links):
@@ -90,6 +92,21 @@ def create_child_nodes(self, **kwargs):
 
                     self.content_manifest.add_item_to_manifest(is_image_file)
                     self.children.append(is_image_file)
+
+
+            if "bypass_google_docs" not in kwargs.keys():
+                is_google_doc = google_doc_identifier(self.session,
+                                                      link,
+                                                      self.root,
+                                                      self,
+                                                      self.page_manifest,
+                                                      self.content_manifest,
+                                                      self.junk_manifest,
+                                                      **self.kwargs)
+                if is_google_doc:
+                    self.content_manifest.add_item_to_manifest(is_google_doc)
+                    self.children.append(is_google_doc)
+
 
             if "bypass_additional_nodes" not in kwargs.keys():
 

@@ -2,13 +2,12 @@ import json
 import os
 from core_canvas_classes.canvas_page_wrapper import CanvasCourseWrapper
 import datetime
-
+from collections import OrderedDict
 
 def build_path(node, content_type) -> list:
 
     path_list = []
     def get_parent(node, content_type):
-
 
         if content_type == 'title':
 
@@ -26,9 +25,6 @@ def build_path(node, content_type) -> list:
             # path_list.append(node.title)
             # get_parent(node.parent, content_type)
 
-
-
-
         if content_type == 'uri':
             if node.root_node:
                 path_list.append(node.__class__.__name__)
@@ -42,7 +38,7 @@ def build_path(node, content_type) -> list:
 
 
     get_parent(node, content_type)
-    return list(set(path_list))
+    return list(OrderedDict.fromkeys(path_list))
 
 def main_dict(**items) -> dict:
 
@@ -142,7 +138,8 @@ def image_item_dict(**items):
         "order": items.get("order"),
         "downloadable": items.get("downloadable"),
         "title_path": items.get("title_path"),
-        "uri_path": items.get("uri_path")
+        "uri_path": items.get("uri_path"),
+        "mime_type": items.get("mime_type"),
 
     }
 

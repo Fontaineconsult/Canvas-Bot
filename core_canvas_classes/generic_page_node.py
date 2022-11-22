@@ -96,11 +96,17 @@ class PageNode(object):
                 self.node_init_failed = True
         else:
             self.page_html = BeautifulSoup(self.session.selenium_get(self.url, wait_timers[self.__class__.__name__]), "html.parser")
+
+            if self.__class__.__name__ == "GoogleDocument":
+                print("GOOOGLE DOCUMNETTT")
+                print(self.scraper)
+
             self.get_title()
-            self.page_html = self.page_html.find(attrs=self.scraper)
+            if self.scraper != "reek":
+                self.page_html = self.page_html.find(attrs=self.scraper)
 
             if self.page_html is None:
-                print(f"{Fore.LIGHTRED_EX}No Page HTML {self.url}{Style.RESET_ALL}")
+                print(f"{Fore.LIGHTRED_EX}No Selenium Page HTML {self.url}{Style.RESET_ALL}")
                 self.node_init_failed = True
 
     def _sort_links(self):
