@@ -59,7 +59,11 @@ class CanvasSession:
 
     def selenium_get(self, url, wait=None):
         print("Selenium get", url)
-        if wait:
-            return self.SeleniumSession.get_page(url, wait)
-        else:
-            return self.SeleniumSession.get_page(url)
+
+        try:
+            if wait:
+                return self.SeleniumSession.get_page(url, wait)
+            else:
+                return self.SeleniumSession.get_page(url)
+        except urllib3.exceptions.MaxRetryError as e:
+            print(e)

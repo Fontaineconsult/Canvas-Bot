@@ -34,6 +34,7 @@ class Content:
         self.root_node = False
         self.downloadable = False
         self.is_hidden = False
+        self.pseudo_content = False
         self.order = 0
         self.children = list()
         self.mime_type = get_mime_type(link)

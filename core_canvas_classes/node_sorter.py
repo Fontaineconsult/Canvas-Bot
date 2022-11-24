@@ -104,7 +104,7 @@ def create_child_nodes(self, **kwargs):
                                                       self.junk_manifest,
                                                       **self.kwargs)
                 if is_google_doc:
-                    self.content_manifest.add_item_to_manifest(is_google_doc)
+                    self.page_manifest.add_item_to_manifest(is_google_doc)
                     self.children.append(is_google_doc)
 
 

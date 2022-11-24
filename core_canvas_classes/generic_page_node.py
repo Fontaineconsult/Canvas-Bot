@@ -27,6 +27,7 @@ class PageNode(object):
         self.root = root
         self.root_node = False
         self.title = None
+        self.pseudo_content = False
         self.parent = parent
         self.children = list()
         self.session = session
@@ -73,7 +74,9 @@ class PageNode(object):
     def _get_page_html(self):
         if "requests_get" in self.kwargs.keys():
             page_request = self.session.requests_get(self.url)
+
             if page_request:
+                self.raw_page_html = page_request.content
                 self.page_html = BeautifulSoup(page_request.content, "html.parser")
                 self.get_title()
                 if isinstance(self.scraper, str):
@@ -95,19 +98,17 @@ class PageNode(object):
                 print(f"{Fore.LIGHTRED_EX}No Page HTML {self.url}{Style.RESET_ALL}")
                 self.node_init_failed = True
         else:
-            self.page_html = BeautifulSoup(self.session.selenium_get(self.url, wait_timers[self.__class__.__name__]), "html.parser")
-
-            if self.__class__.__name__ == "GoogleDocument":
-                print("GOOOGLE DOCUMNETTT")
-                print(self.scraper)
-
+            selenium_page_request = self.session.selenium_get(self.url, wait_timers[self.__class__.__name__])
+            self.page_html = BeautifulSoup(selenium_page_request, "html.parser")
+            self.raw_page_html = selenium_page_request
             self.get_title()
-            if self.scraper != "reek":
-                self.page_html = self.page_html.find(attrs=self.scraper)
+            self.page_html = self.page_html.find(attrs=self.scraper)
 
             if self.page_html is None:
                 print(f"{Fore.LIGHTRED_EX}No Selenium Page HTML {self.url}{Style.RESET_ALL}")
                 self.node_init_failed = True
+
+
 
     def _sort_links(self):
         try:
