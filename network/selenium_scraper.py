@@ -76,6 +76,9 @@ class SeleniumDriver:
         except urllib3.exceptions.ProtocolError as e:
             print(e)
 
+        except urllib3.exceptions.MaxRetryError as e:
+            print(e)
+
         except WebDriverException:
             print("Can't Load Page")
         return self.driver.page_source

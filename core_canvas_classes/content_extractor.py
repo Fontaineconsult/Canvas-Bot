@@ -145,6 +145,30 @@ def image_item_dict(**items):
 
     return image_item_dict
 
+
+def pseudo_content_dict(**items):
+
+    image_item_dict = {
+
+        "title": items.get("title"),
+        "url": items.get("url"),
+        "source_page_url": items.get("source_page_url"),
+        "source_page_type": items.get("source_page_type"),
+        "source_page_title": items.get("source_page_title"),
+        "scan_date": datetime.datetime.now(),
+        "is_hidden": items.get("is_hidden"),
+        "content_type": items.get("content_type"),
+        "alt_tag_present": items.get("alt_tag_present"),
+        "order": items.get("order"),
+        "downloadable": items.get("downloadable"),
+        "title_path": items.get("title_path"),
+        "uri_path": items.get("uri_path"),
+        "mime_type": items.get("mime_type"),
+
+    }
+
+    return image_item_dict
+
 class ContentExtractor(CanvasCourseWrapper):
 
     def __init__(self, course_id, scraper, **kwargs):
@@ -322,6 +346,42 @@ class ContentExtractor(CanvasCourseWrapper):
 
         return audio
 
+
+
+    def get_pseudo_content_to_json(self, save=False):
+        manifest = self.page_manifest.get_content()
+        pseudo_content = main_dict(course_id=self.canvas_course_id,
+                          course_title=None,
+                          content_type="pseudo_content",
+                          count=len(manifest),
+                          course_url=self.course_page_url
+                          )
+        count = 0
+        for item in manifest:
+            if item.pseudo_content:
+                count += 1
+                pseudo_content['content'].append(pseudo_content_dict(
+                    title=item.title,
+                    url=item.url,
+                    source_page_url=item.parent.url,
+                    source_page_title=item.parent.title,
+                    source_page_type=item.parent.__class__.__name__,
+                    is_hidden=item.is_hidden,
+                    content_type=item.__class__.__name__,
+                    mime_type=None,
+                    order=item.order,
+                    downloadable=False,
+                    title_path=build_path(item, "title"),
+                    uri_path=build_path(item, "uri")
+                ))
+        pseudo_content['count'] = count
+
+        if save:
+            return self._save_json_output(json.dumps(pseudo_content_dict, indent=4, sort_keys=True, default=str))
+
+        return pseudo_content
+
+
     def all_content_to_json(self, save=True):
         all_content = {
             "total_items": len(self.content_manifest),
@@ -329,7 +389,8 @@ class ContentExtractor(CanvasCourseWrapper):
                 "videos": self.get_videos_to_json(),
                 "documents": self.get_documents_to_json(),
                 "images": self.get_images_to_json(),
-                "audio": self.get_audio_to_json()
+                "audio": self.get_audio_to_json(),
+                "pseudo_content": self.get_pseudo_content_to_json()
             },
             "course_id": self.course_id,
             "scan_date": datetime.datetime.now()

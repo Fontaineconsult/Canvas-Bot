@@ -28,7 +28,7 @@ filters:
   Discussions: { "class": "discussions-v2__wrapper" }
   DiscussionsGroup: { "class": "ic-item-row ic-discussion-row" }
   ExternalPage: "body"
-  GoogleDocument: "reek"
+  GoogleDocument: {"id": "docs-editor-container"}
   File: {"id": "content"}
   Home: {"class": "show-content user_content clearfix enhanced"}
   HomeFull: {"id": "wiki_page_show"}
