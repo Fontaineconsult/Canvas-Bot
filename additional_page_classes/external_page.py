@@ -56,7 +56,7 @@ class GoogleDocument(PageNode):
             failed = f"{Fore.RED}Failed{Fore.LIGHTYELLOW_EX}"
         else:
             failed = "Success"
-        return f"{Fore.LIGHTGREEN_EX}<{str(self.__class__.__name__)} {self.url} - {failed}>{Style.RESET_ALL}"
+        return f"{Fore.CYAN}<{str(self.__class__.__name__)} {self.url} - {failed}>{Style.RESET_ALL}"
 
 
 
