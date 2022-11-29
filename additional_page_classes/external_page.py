@@ -56,7 +56,7 @@ class GoogleDocument(PageNode):
                           bypass_sort=True,
                           **kwargs)
 
-        self.psuedo_content = True
+        self.pseudo_content = True
 
     def __str__(self):
         if self.node_init_failed:

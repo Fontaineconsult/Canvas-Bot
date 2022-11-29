@@ -6,8 +6,7 @@ from network.canvas_session_manager import CanvasSession
 
 
 class WebDocumentApplication(Content):
-
-
+    ## not using
 
     def __init__(self, link: str, local_session: CanvasSession, parent: PageNode, root):
         Content.__init__(self, link, local_session, parent, root)

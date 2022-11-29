@@ -41,7 +41,7 @@ class CanvasCourseWrapper:
 
     def _init_home_root(self):
         home_page = self.scraper.requests_get(f"{self.course_page_url}/pages/homepage")
-        if home_page.ok:
+        if home_page.ok or home_page is not None:
             self.home_page_root = Home(self.scraper,
                                        f"{self.course_page_url}/pages/homepage",
                                        self.canvas_module_tree_visualization,
