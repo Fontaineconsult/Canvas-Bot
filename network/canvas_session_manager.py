@@ -14,6 +14,7 @@ class CanvasSession:
         self.RequestsSession = requests.session()
         self.SeleniumSession = SeleniumDriver()
         self.selenium_cookies = None
+        self.max_retries = 3
 
     def _init_selenium_login(self):
         print("Logging in with Selenium")
@@ -57,7 +58,7 @@ class CanvasSession:
 
         return self.RequestsSession.head(url, verify=False)
 
-    def selenium_get(self, url, wait=None):
+    def selenium_get(self, url, wait=None, retry_count=0):
         print("Selenium get", url)
 
         try:
@@ -66,4 +67,9 @@ class CanvasSession:
             else:
                 return self.SeleniumSession.get_page(url)
         except urllib3.exceptions.MaxRetryError as e:
-            print(e)
+            if retry_count < 3:
+                print(f"Max Retry Error: retrying {retry_count} ",)
+                self.selenium_get(url, retry_count=retry_count+1)
+            else:
+                print(e)
+                return None

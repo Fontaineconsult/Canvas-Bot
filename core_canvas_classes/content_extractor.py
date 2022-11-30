@@ -366,10 +366,10 @@ class ContentExtractor(CanvasCourseWrapper):
                     source_page_url=item.parent.url,
                     source_page_title=item.parent.title,
                     source_page_type=item.parent.__class__.__name__,
-                    is_hidden=item.is_hidden,
+                    is_hidden=False,
                     content_type=item.__class__.__name__,
                     mime_type=None,
-                    order=item.order,
+                    order=None,
                     downloadable=False,
                     title_path=build_path(item, "title"),
                     uri_path=build_path(item, "uri")

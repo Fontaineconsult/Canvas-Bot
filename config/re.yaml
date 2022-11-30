@@ -34,7 +34,7 @@ image_content_regex:
 canvas_user_file_content_regex: .*.users/[0-9]{0,7}/files/[0-9]{0,9}/preview\?verifier=\w{40}
 
 
-canvas_file_content_regex: .*.courses/[0-9]{0,7}/files/[0-9]{0,9}/
+canvas_file_content_regex: .*.courses/[0-9]{0,7}/files/[0-9]{0,9}.*.
 
 
 web_video_resources_regex:
@@ -110,5 +110,10 @@ additional_ignore_list_regex:
   - .*.search/rubrics.*.
   - .*.khanacademy.org.*.
   - https://www.avi
+  - https://www.youtube.com/user/.*.
+  - .*.().*.
+  - //.*.
+  - https://www.gif
+  - https://en.wikipedia.org/.*.
 
 

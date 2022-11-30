@@ -87,22 +87,26 @@ class PageNode(object):
             if not page_request or not self.page_html:
 
                 print(f"{Fore.LIGHTYELLOW_EX}Request Filtering Failed, Switching to Selenium {self.url}{Style.RESET_ALL}")
-                self.page_html = BeautifulSoup(self.session.selenium_get(self.url, wait_timers[self.__class__.__name__]), "html.parser")
-                self.get_title()
-                if isinstance(self.scraper, str):
-                    self.page_html = self.page_html.find(self.scraper)
-                else:
-                    self.page_html = self.page_html.find(attrs=self.scraper)
+                selenium_page_request = self.session.selenium_get(self.url, wait_timers[self.__class__.__name__])
+
+                if selenium_page_request:
+                    self.page_html = BeautifulSoup(selenium_page_request, "html.parser")
+                    self.get_title()
+                    if isinstance(self.scraper, str):
+                        self.page_html = self.page_html.find(self.scraper)
+                    else:
+                        self.page_html = self.page_html.find(attrs=self.scraper)
 
             if self.page_html is None:
                 print(f"{Fore.LIGHTRED_EX}No Page HTML {self.url}{Style.RESET_ALL}")
                 self.node_init_failed = True
         else:
             selenium_page_request = self.session.selenium_get(self.url, wait_timers[self.__class__.__name__])
-            self.page_html = BeautifulSoup(selenium_page_request, "html.parser")
-            self.raw_page_html = selenium_page_request
-            self.get_title()
-            self.page_html = self.page_html.find(attrs=self.scraper)
+            if selenium_page_request:
+                self.page_html = BeautifulSoup(selenium_page_request, "html.parser")
+                self.raw_page_html = selenium_page_request
+                self.get_title()
+                self.page_html = self.page_html.find(attrs=self.scraper)
 
             if self.page_html is None:
                 print(f"{Fore.LIGHTRED_EX}No Selenium Page HTML {self.url}{Style.RESET_ALL}")

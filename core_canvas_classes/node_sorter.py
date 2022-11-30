@@ -24,10 +24,12 @@ def create_child_nodes(self, **kwargs):
                                                           **self.kwargs)
 
         if canvas_resource_node is not None:
-            if canvas_resource_node.node_init_failed is not True:
+
 
                 if isinstance(canvas_resource_node, PageNode):
-                    self.children.append(canvas_resource_node)
+                    if canvas_resource_node.node_init_failed is not True:
+                        self.children.append(canvas_resource_node)
+
                 if isinstance(canvas_resource_node, str):
                     self.node_links.append(canvas_resource_node)
 
