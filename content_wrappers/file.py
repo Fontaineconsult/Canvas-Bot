@@ -117,7 +117,7 @@ class ContentCanvasFile(Content):
 
         self.page_html = None
         self.is_document = True
-        self.resource_location = "{}{}".format(link, "download")
+        self.resource_location = "{}/{}".format(link, "download")
         self.get_data_from_header()
         self.set_documement_type()
 
@@ -133,11 +133,18 @@ class ContentCanvasFile(Content):
 
 
     def get_data_from_header(self):
-        self.header = self.session.requests_header(self.resource_location)
+        self.header = self.session.requests_header(self.url)
+        print(self.url)
+        print(self.header)
         if self.header:
             self.header = self.header.headers
-            if self.header['Status'] == '302 Found':
+            print(self.header['Status'])
+            if self.header['Status'] == '200 Ok':
                 print(self.header)
+                self.mime_type = get_mime_type(self.header['Content-Type'])
+                self.title = self.header['Content-Disposition']
+            if self.header['Status'] == '302 Found':
+
                 self.mime_type = get_mime_type(self.header['location'])
             else:
                 print(f"{Fore.LIGHTRED_EX}No Download Location found for {self.url}{Style.RESET_ALL}")

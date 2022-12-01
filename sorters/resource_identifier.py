@@ -54,7 +54,7 @@ def canvas_resource_identifier(local_session: CanvasSession,
                         return None
 
                 get_url = local_session.requests_get(link)
-                print("SDFSDFSDFSDF", get_url, link)
+
                 if get_url:
                     if len(get_url.history) == 0:
 
@@ -102,9 +102,7 @@ def canvas_resource_identifier(local_session: CanvasSession,
                                     junk_manifest.append(cleaned_link)
                                     return str(cleaned_link)
 
-
             match_link = resource_node_regex.match(link)
-
             if bool(match_link):
 
                 node = resource_scaffold_key[match_link.groups()[0]]
