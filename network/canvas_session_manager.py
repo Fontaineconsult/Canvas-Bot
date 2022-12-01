@@ -1,3 +1,5 @@
+import time
+
 import requests
 from colorama import Fore, Style
 from requests.exceptions import ConnectionError, ReadTimeout, TooManyRedirects
@@ -14,7 +16,7 @@ class CanvasSession:
         self.RequestsSession = requests.session()
         self.SeleniumSession = SeleniumDriver()
         self.selenium_cookies = None
-        self.max_retries = 3
+        self.max_retries = 1
 
     def _init_selenium_login(self):
         print("Logging in with Selenium")
@@ -67,8 +69,9 @@ class CanvasSession:
             else:
                 return self.SeleniumSession.get_page(url)
         except urllib3.exceptions.MaxRetryError as e:
-            if retry_count < 3:
-                print(f"Max Retry Error: retrying {retry_count} ",)
+            if retry_count < self.max_retries:
+                time.sleep(2)
+                print(f"Max Retry Error: retrying {retry_count + 1} site:", url)
                 self.selenium_get(url, retry_count=retry_count+1)
             else:
                 print(e)
