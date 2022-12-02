@@ -1,5 +1,5 @@
 import mimetypes
-from urllib.parse import urljoin, urlparse
+from urllib.parse import urljoin, urlparse, urlunsplit
 
 from colorama import Fore, Style
 
@@ -109,48 +109,77 @@ class ContentCanvasFile(Content):
     def __init__(self, link: str, local_session: CanvasSession, parent, root):
         self.session = local_session
         self.url = link
-        self._get_page_html()
-        self.title = None
-        self.alt_tag = None
-        self.find_title()
-        Content.__init__(self, link, local_session, parent, root, self.title)
+
 
         self.page_html = None
-        self.is_document = True
-        self.resource_location = "{}/{}".format(link, "download")
+        self.alt_tag = None
+        self._get_page_html()
+        self.title = self.find_title()
+        self.resource_location = self.check_resource_location()
         self.get_data_from_header()
+        Content.__init__(self, link, local_session, parent, root, self.title)
+
+
+
+
         self.set_documement_type()
+        self.downloadable = True
+        self.is_document = True
+
+
 
     def __str__(self):
-        return f"( {self.__class__.__name__} - {self.url} - {self.title} )>"
+        return f"( {self.__class__.__name__} - {self.check_resource_location()} - {self.title} )>"
 
     def _get_page_html(self):
-        page_request = self.session.requests_get(self.url)
+        parse_url = urlparse(self.url)
+
+        if parse_url.path.split("/")[-1] in ["download", "preview"]:
+            remove_end = parse_url.path.split("/")[0:-1]
+            unsplit = urlunsplit((parse_url.scheme, parse_url.netloc,
+                                  "/".join(remove_end),
+                        parse_url.query, parse_url.fragment))
+            page_request = self.session.requests_get(unsplit)
+
+        else:
+            page_request = self.session.requests_get(self.url)
+
         if page_request:
             self.page_html = page_request.content
-        else:
-            self.downloadable = False
+
+
+    def check_resource_location(self):
+
+        parse_url = urlparse(self.url)
+        remove_end = parse_url.path.split("/")[0:-1]
+        remove_end.append("download")
+        add_download = "/".join(remove_end)
+        return urlunsplit((parse_url.scheme, parse_url.netloc,
+                           add_download,
+                            parse_url.query, parse_url.fragment))
+
+
 
 
     def get_data_from_header(self):
-        self.header = self.session.requests_header(self.url)
-        print(self.url)
-        print(self.header)
+        self.header = self.session.requests_header(self.resource_location)
+
         if self.header:
             self.header = self.header.headers
-            print(self.header['Status'])
+
             if self.header['Status'] == '200 Ok':
                 print(self.header)
                 self.mime_type = get_mime_type(self.header['Content-Type'])
-                self.title = self.header['Content-Disposition']
+
             if self.header['Status'] == '302 Found':
+                location_header = self.session.requests_header(self.header['location'])
 
                 self.mime_type = get_mime_type(self.header['location'])
             else:
                 print(f"{Fore.LIGHTRED_EX}No Download Location found for {self.url}{Style.RESET_ALL}")
 
     def set_documement_type(self):
-
+        print("TITTLEEE", self.title)
         if mime_check_image.search(self.mime_type):
             self.is_document = False
             self.is_image = True
@@ -160,11 +189,10 @@ class ContentCanvasFile(Content):
 
 
     def find_title(self):
-        self.downloadable = True
-        if self.downloadable:
-            try:
-                self.title = BeautifulSoup(self.page_html, "html.parser").find('h2').text
-            except AttributeError:
-                print("No H2 tag found in CanvasFile page", self.url)
 
+        try:
+            return BeautifulSoup(self.page_html, "html.parser").find('h2').text
 
+        except AttributeError:
+            print("No H2 tag found in CanvasFile page", self.url)
+            return "No Title Found"
