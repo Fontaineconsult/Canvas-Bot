@@ -60,3 +60,6 @@ mime_check_image = mime_check(expressions["image_content_regex"])
 
 mime_check_document = mime_check(expressions["document_content_regex"])
 
+mime_check_video = mime_check(expressions["video_file_resources_regex"])
+
+mime_check_audio = mime_check(expressions["audio_file_resources_regex"])

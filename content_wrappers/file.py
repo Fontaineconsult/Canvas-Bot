@@ -7,15 +7,14 @@ from content_wrappers.content import Content
 from network.canvas_session_manager import CanvasSession
 from bs4 import BeautifulSoup
 
-from sorters.sorter_re import mime_check_image
+from sorters.sorter_re import mime_check_image, mime_check_document, mime_check_video, mime_check_audio
 
 
 def get_mime_type(link):
 
     clean_url = urljoin(link, urlparse(link).path)
     mime_type = mimetypes.MimeTypes().guess_type(clean_url)[0]
-    if mime_type is None:
-        return 'text/plain'
+    print("CLEAN", clean_url, mime_type)
     return mime_type
 
 
@@ -109,8 +108,6 @@ class ContentCanvasFile(Content):
     def __init__(self, link: str, local_session: CanvasSession, parent, root):
         self.session = local_session
         self.url = link
-
-
         self.page_html = None
         self.alt_tag = None
         self._get_page_html()
@@ -118,13 +115,8 @@ class ContentCanvasFile(Content):
         self.resource_location = self.check_resource_location()
         self.get_data_from_header()
         Content.__init__(self, link, local_session, parent, root, self.title)
-
-
-
-
         self.set_documement_type()
-        self.downloadable = True
-        self.is_document = True
+
 
 
 
@@ -168,21 +160,31 @@ class ContentCanvasFile(Content):
             self.header = self.header.headers
 
             if self.header['Status'] == '200 Ok':
-                print(self.header)
                 self.mime_type = get_mime_type(self.header['Content-Type'])
 
             if self.header['Status'] == '302 Found':
-                location_header = self.session.requests_header(self.header['location'])
-
+                print("OCALTION", self.header['location'])
                 self.mime_type = get_mime_type(self.header['location'])
             else:
                 print(f"{Fore.LIGHTRED_EX}No Download Location found for {self.url}{Style.RESET_ALL}")
 
     def set_documement_type(self):
-        print("TITTLEEE", self.title)
+        print("CHECKING MIME", self.mime_type)
         if mime_check_image.search(self.mime_type):
-            self.is_document = False
+            print("ITS AN IMAGE", self.mime_type)
             self.is_image = True
+
+        if mime_check_document.search(self.mime_type):
+            print("ITS A DOCUMENT", self.mime_type)
+            self.is_document = True
+
+        if mime_check_video.search(self.mime_type):
+            print("ITS A VIDEO", self.mime_type)
+            self.is_video = True
+
+        if mime_check_audio.search(self.mime_type):
+            print("ITS A AUDIO", self.mime_type)
+            self.is_audio = True
 
     def find_alt_tag(self):
         pass
