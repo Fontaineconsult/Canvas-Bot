@@ -1,5 +1,5 @@
-import mimetypes
-from urllib.parse import urljoin, urlparse, urlunsplit
+
+from urllib.parse import urlparse, urlunsplit
 
 from colorama import Fore, Style
 
@@ -8,14 +8,7 @@ from network.canvas_session_manager import CanvasSession
 from bs4 import BeautifulSoup
 
 from sorters.sorter_re import mime_check_image, mime_check_document, mime_check_video, mime_check_audio
-
-
-def get_mime_type(link):
-
-    clean_url = urljoin(link, urlparse(link).path)
-    mime_type = mimetypes.MimeTypes().guess_type(clean_url)[0]
-    print("CLEAN", clean_url, mime_type)
-    return mime_type
+from sorters.sorting_tools import get_mime_type
 
 
 class ContentFile(Content):
@@ -113,8 +106,9 @@ class ContentCanvasFile(Content):
         self._get_page_html()
         self.title = self.find_title()
         self.resource_location = self.check_resource_location()
+        self.mime_type = None
         self.get_data_from_header()
-        Content.__init__(self, link, local_session, parent, root, self.title)
+        Content.__init__(self, link, local_session, parent, root, self.title, self.mime_type, self.resource_location)
         self.set_documement_type()
 
 
@@ -130,8 +124,10 @@ class ContentCanvasFile(Content):
             remove_end = parse_url.path.split("/")[0:-1]
             unsplit = urlunsplit((parse_url.scheme, parse_url.netloc,
                                   "/".join(remove_end),
-                        parse_url.query, parse_url.fragment))
-            page_request = self.session.requests_get(unsplit)
+                                    "",""))
+            self.url = unsplit
+            page_request = self.session.requests_get(self.url)
+
 
         else:
             page_request = self.session.requests_get(self.url)
@@ -141,21 +137,30 @@ class ContentCanvasFile(Content):
 
 
     def check_resource_location(self):
-
         parse_url = urlparse(self.url)
-        remove_end = parse_url.path.split("/")[0:-1]
-        remove_end.append("download")
-        add_download = "/".join(remove_end)
-        return urlunsplit((parse_url.scheme, parse_url.netloc,
-                           add_download,
-                            parse_url.query, parse_url.fragment))
+
+        if parse_url.path.split("/")[-1] in ["download", "preview"]:
 
 
+            remove_end = parse_url.path.split("/")[0:-1]
+            remove_end.append("download")
+            add_download = "/".join(remove_end)
+            return urlunsplit((parse_url.scheme, parse_url.netloc,
+                               add_download,
+                                "",""))
+
+        else:
+            split_path = parse_url.path.split("/")
+            split_path.append("download")
+            add_download = "/".join(split_path)
+            return urlunsplit((parse_url.scheme, parse_url.netloc,
+                           add_download,"",""))
 
 
     def get_data_from_header(self):
+        print("CHECKING RESOURCE", self.resource_location)
         self.header = self.session.requests_header(self.resource_location)
-
+        print(self.header.headers)
         if self.header:
             self.header = self.header.headers
 
@@ -164,26 +169,24 @@ class ContentCanvasFile(Content):
 
             if self.header['Status'] == '302 Found':
                 print("OCALTION", self.header['location'])
-                self.mime_type = get_mime_type(self.header['location'])
+                self.mime_type = get_mime_type(self.header['location'], "canvasFile")
             else:
                 print(f"{Fore.LIGHTRED_EX}No Download Location found for {self.url}{Style.RESET_ALL}")
 
     def set_documement_type(self):
-        print("CHECKING MIME", self.mime_type)
+        if self.mime_type is None:
+            self.get_data_from_header()
+        print("MIME", self.mime_type)
         if mime_check_image.search(self.mime_type):
-            print("ITS AN IMAGE", self.mime_type)
             self.is_image = True
 
         if mime_check_document.search(self.mime_type):
-            print("ITS A DOCUMENT", self.mime_type)
             self.is_document = True
 
         if mime_check_video.search(self.mime_type):
-            print("ITS A VIDEO", self.mime_type)
             self.is_video = True
 
         if mime_check_audio.search(self.mime_type):
-            print("ITS A AUDIO", self.mime_type)
             self.is_audio = True
 
     def find_alt_tag(self):

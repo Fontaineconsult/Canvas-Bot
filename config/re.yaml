@@ -29,6 +29,7 @@ image_content_regex:
   - .*\.gif
   - .*\.svg
   - .*\.png
+  - .*\.svg+xml
 
 
 canvas_user_file_content_regex: .*.users/[0-9]{0,7}/files/[0-9]{0,9}/preview\?verifier=\w{40}

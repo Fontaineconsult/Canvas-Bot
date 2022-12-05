@@ -84,3 +84,6 @@ sorters:
               - data:video.*.
               - /video/play.*.
 
+added_mimetypes:
+  - "application/vnd.openxmlformats-officedocument.wordprocessingml.document|.docx"
+  - "application/vnd.openxmlformats-officedocument.presentationml.presentation|.pptx"
