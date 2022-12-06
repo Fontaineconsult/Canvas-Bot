@@ -196,6 +196,6 @@ class ContentCanvasFile(Content):
         try:
             return BeautifulSoup(self.page_html, "html.parser").find('h2').text
 
-        except AttributeError:
+        except (AttributeError, TypeError):
             print("No H2 tag found in CanvasFile page", self.url)
             return "No Title Found"

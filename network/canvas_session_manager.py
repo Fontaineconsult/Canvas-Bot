@@ -57,12 +57,10 @@ class CanvasSession:
             return None
 
     def requests_header(self, url):
-        print("THE URL", url)
         return self.RequestsSession.head(url, verify=True)
 
     def selenium_get(self, url, wait=None, retry_count=0):
         print("Selenium get", url)
-
         try:
             if wait:
                 return self.SeleniumSession.get_page(url, wait)
