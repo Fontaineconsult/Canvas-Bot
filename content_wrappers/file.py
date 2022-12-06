@@ -108,7 +108,8 @@ class ContentCanvasFile(Content):
         self.resource_location = self.check_resource_location()
         self.mime_type = None
         self.get_data_from_header()
-        Content.__init__(self, self.resource_location, local_session, parent, root, self.title, self.mime_type, self.resource_location)
+        self.header = None
+        Content.__init__(self, self.url, local_session, parent, root, self.title, self.mime_type, self.resource_location)
         self.set_documement_type()
 
 
@@ -135,7 +136,6 @@ class ContentCanvasFile(Content):
         if page_request:
             self.page_html = page_request.content
 
-
     def check_resource_location(self):
         parse_url = urlparse(self.url)
 
@@ -156,22 +156,20 @@ class ContentCanvasFile(Content):
             return urlunsplit((parse_url.scheme, parse_url.netloc,
                            add_download,"",""))
 
+    def get_data_from_header(self, location_url=None):
+        if location_url:
+            header_request = self.session.requests_header(location_url)
+        else:
+            header_request = self.session.requests_header(self.resource_location)
 
-    def get_data_from_header(self):
-
-        self.header = self.session.requests_header(self.resource_location)
-
-        if self.header:
-            self.header = self.header.headers
-
-            if self.header['Status'] == '200 Ok':
-                self.mime_type = get_mime_type(self.header['Content-Type'])
-
-            if self.header['Status'] == '302 Found':
-                print("OCALTION", self.header['location'])
-                self.mime_type = get_mime_type(self.header['location'], "canvasFile")
+        if header_request:
+            self.header = header_request.headers
+            if header_request.status_code == 200:
+                self.mime_type = self.header['Content-Type']
+            elif header_request.status_code == 302:
+                self.get_data_from_header(self.header['location'])
             else:
-                print(f"{Fore.LIGHTRED_EX}No Download Location found for {self.url}{Style.RESET_ALL}")
+                print(f"{Fore.LIGHTRED_EX}Could not locate MimeType {self.url}{Style.RESET_ALL}")
 
     def set_documement_type(self):
         if self.mime_type is None:
