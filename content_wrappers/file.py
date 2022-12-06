@@ -108,7 +108,7 @@ class ContentCanvasFile(Content):
         self.resource_location = self.check_resource_location()
         self.mime_type = None
         self.get_data_from_header()
-        Content.__init__(self, link, local_session, parent, root, self.title, self.mime_type, self.resource_location)
+        Content.__init__(self, self.resource_location, local_session, parent, root, self.title, self.mime_type, self.resource_location)
         self.set_documement_type()
 
 
@@ -158,9 +158,9 @@ class ContentCanvasFile(Content):
 
 
     def get_data_from_header(self):
-        print("CHECKING RESOURCE", self.resource_location)
+
         self.header = self.session.requests_header(self.resource_location)
-        print(self.header.headers)
+
         if self.header:
             self.header = self.header.headers
 
@@ -176,7 +176,7 @@ class ContentCanvasFile(Content):
     def set_documement_type(self):
         if self.mime_type is None:
             self.get_data_from_header()
-        print("MIME", self.mime_type)
+
         if mime_check_image.search(self.mime_type):
             self.is_image = True
 

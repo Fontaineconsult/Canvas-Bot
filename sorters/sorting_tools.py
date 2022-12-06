@@ -48,7 +48,6 @@ def get_mime_type(link, note=None):
     clean_url = urljoin(link, urlparse(link).path)
     extension = f".{clean_url.split('.')[-1]}"
     # look for types that mimetypes doesn't have first
-    print(extension, clean_url)
     for added_type in read_config()['added_mimetypes']:
         mime_type_new, ext = added_type.split("|")
         if extension == ext:

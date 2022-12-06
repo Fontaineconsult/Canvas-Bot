@@ -45,6 +45,7 @@ class Content:
     def _init_node(self):
         self.get_order()
         self.check_mime_type()
+
         self.root.tree_vis.add_node(self)
 
     def get_order(self):

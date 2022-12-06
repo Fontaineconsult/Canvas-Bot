@@ -18,3 +18,6 @@ class CanvasBot:
         self.Content.view_canvas_tree()
         self.CanvasSession.SeleniumSession.driver.close()
 
+    def print_content_manifest(self):
+
+        self.Content.content_manifest.print_manifest()

@@ -1,4 +1,4 @@
-
+from urllib.parse import urljoin, urlparse
 
 
 def create_child_nodes(self, **kwargs):
@@ -58,7 +58,8 @@ def create_child_nodes(self, **kwargs):
                     self.children.append(is_file)
 
             if "bypass_canvas_file_nodes" not in kwargs.keys():
-                is_canvas_file = canvas_file_indentifier(link, self.session, self, self.root)
+                no_query_params = urljoin(link, urlparse(link).path)
+                is_canvas_file = canvas_file_indentifier(no_query_params, self.session, self, self.root)
 
                 if is_canvas_file:
 

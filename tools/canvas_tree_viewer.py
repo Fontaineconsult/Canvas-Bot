@@ -15,6 +15,7 @@ class CanvasTree:
         node_name = str(node)
         node_value = str(id(node))
         parent = str(id(node.parent))
+
         try:
             self.tree.create_node(node_name, node_value, parent)
         except:
