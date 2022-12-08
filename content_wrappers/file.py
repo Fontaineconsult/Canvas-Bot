@@ -1,4 +1,4 @@
-
+import warnings
 from urllib.parse import urlparse, urlunsplit
 
 from colorama import Fore, Style
@@ -137,6 +137,7 @@ class ContentCanvasFile(Content):
             self.page_html = page_request.content
 
     def check_resource_location(self):
+        print("BEFORE PARSE", self.url)
         parse_url = urlparse(self.url)
 
         if parse_url.path.split("/")[-1] in ["download", "preview"]:
@@ -157,11 +158,16 @@ class ContentCanvasFile(Content):
                            add_download,"",""))
 
     def get_data_from_header(self, location_url=None):
+        print("AFTER PARSE", self.resource_location)
         if location_url:
-            header_request = self.session.requests_header(location_url)
-        else:
-            header_request = self.session.requests_header(self.resource_location)
+            header_url = location_url
+            header_request = self.session.requests_header(header_url)
+            print("from location", header_request.status_code, header_request.headers)
 
+        else:
+            header_url = self.check_resource_location()
+            header_request = self.session.requests_header(header_url)
+            print("from resource location", header_request.status_code, header_request.headers)
         if header_request:
             self.header = header_request.headers
             if header_request.status_code == 200:
@@ -169,23 +175,29 @@ class ContentCanvasFile(Content):
             elif header_request.status_code == 302:
                 self.get_data_from_header(self.header['location'])
             else:
-                print(f"{Fore.LIGHTRED_EX}Could not locate MimeType {self.url}{Style.RESET_ALL}")
+                print(f"{Fore.LIGHTRED_EX}Could not locate MimeType {header_url}{Style.RESET_ALL}")
+                print(self.header)
 
     def set_documement_type(self):
         if self.mime_type is None:
-            self.get_data_from_header()
+            self.get_data_from_header(self.resource_location)
 
-        if mime_check_image.search(self.mime_type):
-            self.is_image = True
+        try:
+            if mime_check_image.search(self.mime_type):
+                self.is_image = True
 
-        if mime_check_document.search(self.mime_type):
-            self.is_document = True
+            if mime_check_document.search(self.mime_type):
+                self.is_document = True
 
-        if mime_check_video.search(self.mime_type):
-            self.is_video = True
+            if mime_check_video.search(self.mime_type):
+                self.is_video = True
 
-        if mime_check_audio.search(self.mime_type):
-            self.is_audio = True
+            if mime_check_audio.search(self.mime_type):
+                self.is_audio = True
+        except TypeError:
+            warnings.warn("No MimeType specified can't set content type")
+            print(self.header)
+            print(self.resource_location)
 
     def find_alt_tag(self):
         pass
