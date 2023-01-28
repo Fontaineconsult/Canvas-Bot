@@ -183,6 +183,7 @@ class ContentCanvasFile(Content):
             self.get_data_from_header(self.resource_location)
 
         try:
+            print("MIME_TYPE", self.mime_type, self.url)
             if mime_check_image.search(self.mime_type):
                 self.is_image = True
 
