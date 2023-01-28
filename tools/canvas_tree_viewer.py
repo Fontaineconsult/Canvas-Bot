@@ -1,12 +1,10 @@
-from treelib import Node, Tree
-import treelib
+from treelib import Tree
 import warnings
 
 class CanvasTree:
 
     def __init__(self):
         self.tree = Tree()
-
 
     def init_node(self, root):
         self.tree.create_node(str(root), str(id(root)))
