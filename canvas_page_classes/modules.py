@@ -13,7 +13,7 @@ class Modules(PageNode):
                  parent, page_manifest, content_manifest, junk_manifest: list, **kwargs):
         self.tree_vis = tree_vis
         PageNode.__init__(self, session, url, self, parent,
-                          page_manifest, content_manifest, junk_manifest, bypass_sort=True, **kwargs)
+                          page_manifest, content_manifest, junk_manifest, **kwargs)
         self.kwargs = kwargs
         self._build_modules()
 

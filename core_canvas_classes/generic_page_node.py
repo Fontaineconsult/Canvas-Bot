@@ -116,7 +116,7 @@ class PageNode(object):
 
     def _sort_links(self):
         try:
-
+            print(self.url, self.page_html, "DSFHSDKJFHSDKJFHKJDS")
             href_links_to_identify = list(set([a_tag.get('href') for a_tag in self.page_html.find_all('a')]))
             img_links_to_identify = list(set([a_tag.get('src') for a_tag in self.page_html.find_all('img')]))
             video_tag = list(set([a_tag.get('src') for a_tag in self.page_html.find_all('video')]))

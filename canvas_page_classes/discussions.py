@@ -21,7 +21,7 @@ class Discussions(PageNode):
                           self.cleaned_url, self,
                           parent, page_manifest,
                           content_manifest, junk_manifest,
-                          bypass_sort=True, **kwargs)
+                          **kwargs)
         self._build_discussions()
         self.kwargs = kwargs
 
