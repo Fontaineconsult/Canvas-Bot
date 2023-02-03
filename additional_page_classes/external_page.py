@@ -11,7 +11,7 @@ class ExternalPage(PageNode):
                  url, root, parent,
                  page_manifest: dict, content_manifest: dict,
                  junk_manifest: list, **kwargs):
-
+        kwargs.pop("bypass_sort")
         PageNode.__init__(self,
                           session,
                           url,
@@ -41,7 +41,7 @@ class GoogleDocument(PageNode):
                  url, root, parent,
                  page_manifest: dict, content_manifest: dict,
                  junk_manifest: list, **kwargs):
-
+        kwargs.pop("bypass_sort")
         PageNode.__init__(self,
                           session,
                           url,

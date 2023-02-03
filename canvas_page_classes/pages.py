@@ -14,6 +14,7 @@ class Pages(PageNode):
         PageNode.__init__(self, session, url, self, parent,
                           page_manifest, content_manifest,
                           junk_manifest,
+                          bypass_sort=True,
                           **kwargs)
         self._build_modules()
 
@@ -25,7 +26,7 @@ class Pages(PageNode):
         return f"{Fore.LIGHTYELLOW_EX}<{str(self.__class__.__name__)} {self.url} - {failed}>{Style.RESET_ALL}"
 
     def _build_modules(self):
-
+        self.kwargs.pop("bypass_sort")
         pages = self.page_html.find_all(attrs=filters['PagesLinks'])
         for each_page in pages:
             if each_page['href']:
@@ -36,4 +37,5 @@ class Pages(PageNode):
                                             self.page_manifest,
                                             self.content_manifest,
                                             self.junk_manifest,
+                                            bypass_sort=False,
                                             **self.kwargs))

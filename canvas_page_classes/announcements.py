@@ -26,16 +26,22 @@ class Announcements(PageNode):
         return f"{Fore.LIGHTYELLOW_EX}<{str(self.__class__.__name__)} {self.url} - {failed}>{Style.RESET_ALL}"
 
     def _build_modules(self):
-        context_modules = self.page_html.find_all(attrs=filters['Announcement'])
-        for count, each_module in enumerate(context_modules):
+        if self.kwargs.get("bypass_sort"):
+            self.kwargs.pop("bypass_sort")
+        if self.page_html is not None:
+            context_modules = self.page_html.find_all(attrs=filters['Announcement'])
+            for count, each_module in enumerate(context_modules):
 
-            self.children.append(Announcement(self.session,
-                                        each_module,
-                                        self,
-                                        self,
-                                        self.page_manifest,
-                                        self.content_manifest,
-                                        self.junk_manifest,
-                                        count,
-                                        **self.kwargs))
+                self.children.append(Announcement(self.session,
+                                            each_module,
+                                            self,
+                                            self,
+                                            self.page_manifest,
+                                            self.content_manifest,
+                                            self.junk_manifest,
+                                            count,
+                                            bypass_sort=False,
+                                            **self.kwargs))
 
+        else:
+            print(f"{Fore.LIGHTYELLOW_EX}<{str(self.__class__.__name__)} {self.url} - BAD PAGE HTML>{Style.RESET_ALL}")

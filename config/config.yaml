@@ -32,7 +32,7 @@ filters:
   File: {"id": "content"}
   Home: {"class": "show-content user_content clearfix enhanced"}
   HomeFull: {"id": "wiki_page_show"}
-  Item: {"class": "ui-listview ui-listview-no-rounded-bottom"}
+  Item: {"id": "content-wrapper"}
   Module: {"class": "context_module"} # list
   Modules: {"id": "context_modules"}
   Page: {"class": "show-content user_content clearfix enhanced"} # list

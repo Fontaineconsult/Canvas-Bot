@@ -25,6 +25,7 @@ class PageComponentNode:
                  content_manifest: dict,
                  junk_manifest: list,
                  count: int,
+                 module_id=None,
                  **kwargs):
 
         self.root = root
@@ -40,6 +41,7 @@ class PageComponentNode:
         self.content_manifest = content_manifest
         self.junk_manifest = junk_manifest
         self.title = None
+        self.module_id = module_id
         self.node_links = list()
 
         self.create_child_nodes = lambda: create_child_nodes(self, **self.kwargs)

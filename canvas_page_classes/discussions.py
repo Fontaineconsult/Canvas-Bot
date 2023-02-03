@@ -20,7 +20,7 @@ class Discussions(PageNode):
         PageNode.__init__(self, session,
                           self.cleaned_url, self,
                           parent, page_manifest,
-                          content_manifest, junk_manifest,
+                          content_manifest, junk_manifest, bypass_sort=True,
                           **kwargs)
         self._build_discussions()
         self.kwargs = kwargs
@@ -33,7 +33,7 @@ class Discussions(PageNode):
         return f"{Fore.LIGHTYELLOW_EX}<{str(self.__class__.__name__)} {self.url} - {failed}>{Style.RESET_ALL}"
 
     def _build_discussions(self):
-
+        self.kwargs.pop("bypass_sort")
         context_modules = self.page_html.find_all(attrs=filters['DiscussionsGroup'])
         for count, each_module in enumerate(context_modules):
 
@@ -45,4 +45,5 @@ class Discussions(PageNode):
                                                   self.content_manifest,
                                                   self.junk_manifest,
                                                   count,
+                                                  bypass_sort=False,
                                                   **self.kwargs))

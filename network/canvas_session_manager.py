@@ -10,6 +10,13 @@ from config.read import read_config
 requests_settings = read_config()['requests']
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
+
+from fake_useragent import UserAgent
+ua = UserAgent()
+print(ua.chrome)
+
+
+
 class CanvasSession:
 
     def __init__(self):

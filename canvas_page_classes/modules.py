@@ -13,7 +13,7 @@ class Modules(PageNode):
                  parent, page_manifest, content_manifest, junk_manifest: list, **kwargs):
         self.tree_vis = tree_vis
         PageNode.__init__(self, session, url, self, parent,
-                          page_manifest, content_manifest, junk_manifest, **kwargs)
+                          page_manifest, content_manifest, junk_manifest, bypass_sort=True, **kwargs)
         self.kwargs = kwargs
         self._build_modules()
 
@@ -28,8 +28,10 @@ class Modules(PageNode):
     def _build_modules(self):
 
         context_modules = self.page_html.find_all(attrs=filters['Module'])
+
         for count, each_module in enumerate(context_modules):
 
+            module_id = each_module.select('div', attrs={"class": "item-group-condensed"})[0].get('id')
             self.children.append(Module(self.session,
                                         each_module,
                                         self,
@@ -38,5 +40,7 @@ class Modules(PageNode):
                                         self.content_manifest,
                                         self.junk_manifest,
                                         count,
+                                        module_id,
+                                        bypass_sort=False,
                                         **self.kwargs))
 

@@ -20,6 +20,7 @@ class Assignments(PageNode):
                           self.cleaned_url, self,
                           parent, page_manifest,
                           content_manifest, junk_manifest,
+                          bypass_sort=True,
                           **kwargs)
         self._build_modules()
         self.kwargs = kwargs
@@ -32,7 +33,8 @@ class Assignments(PageNode):
         return f"{Fore.LIGHTYELLOW_EX}<{str(self.__class__.__name__)} {self.url} - {failed}>{Style.RESET_ALL}"
 
     def _build_modules(self):
-        print(self.page_html)
+
+        self.kwargs.pop("bypass_sort")
         context_modules = self.page_html.find_all(attrs=filters['AssignmentsGroup'])
         for count, each_module in enumerate(context_modules):
 
@@ -44,4 +46,5 @@ class Assignments(PageNode):
                                         self.content_manifest,
                                         self.junk_manifest,
                                         count,
+                                        bypass_sort=False,
                                         **self.kwargs))

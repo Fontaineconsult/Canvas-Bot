@@ -16,6 +16,7 @@ from sorters.file_content_identifier import canvas_file_content_regex
 from sorters.sorter_re import resource_node_regex, bad_redirects
 
 from sorters.sorting_tools import is_url_valid
+from tools.canvas_api import get_module_item
 
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
@@ -54,7 +55,7 @@ def canvas_resource_identifier(local_session: CanvasSession,
                         return None
 
                 get_url = local_session.requests_get(input_link)
-                print(get_url.history)
+
 
                 if get_url:
 
@@ -74,13 +75,14 @@ def canvas_resource_identifier(local_session: CanvasSession,
                         for request in get_url.history:
 
                             if request.status_code == 302:
-                                print("ZINKNKGG", request.headers['location'])
                                 if bad_redirects.match(request.headers['location']):
-                                    print("ZINKNKGG", request.headers['location'])
-
-
-
-                                match_link = resource_node_regex.match(request.headers['location'])
+                                    print("Bad Redirect", request.headers['location'], input_link, parent)
+                                    print("ID", parent.module_id)
+                                    redirected_url = get_module_item(root.parent.canvas_course_id, parent.module_id, input_link.split("/")[-1])
+                                    match_link = resource_node_regex.match(redirected_url)
+                                    print("CORRECT URL", redirected_url)
+                                else:
+                                    match_link = resource_node_regex.match(request.headers['location'])
                                 if bool(match_link):
                                     if match_link.group() in page_manifest.keys():
                                         return None

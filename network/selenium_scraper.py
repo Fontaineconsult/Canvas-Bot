@@ -9,6 +9,8 @@ import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from fake_useragent import UserAgent
+from selenium_stealth import stealth
+
 
 browser_options = webdriver.ChromeOptions()
 
@@ -48,8 +50,21 @@ class SeleniumDriver:
     def __init__(self):
 
         self.driver = webdriver.Chrome(chrome_driver_path, options=browser_options)
+
+
         self.driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
         self.driver.execute_cdp_cmd('Network.setUserAgentOverride', {"userAgent": userAgent})
+
+        stealth(self.driver,
+                languages=["en-US", "en"],
+                vendor="Google Inc.",
+                platform="Win32",
+                webgl_vendor="Intel Inc.",
+                renderer="Intel Iris OpenGL Engine",
+                fix_hairline=True,
+                )
+
+
         self.driver.set_page_load_timeout(10)
         self.logged_in = False
 
@@ -78,6 +93,7 @@ class SeleniumDriver:
         self.driver.find_element(By.XPATH, "//*[@id='pseudonym_session_password']")\
             .send_keys(os.environ.get("canvas_login_password"))
         self.driver.find_element(By.XPATH,"//*[@id='login_form']/div[3]/div[2]/button").click()
+        self.driver.implicitly_wait(2)
 
     def get_page(self, url: str, wait=None, max_timeout=10, print_output=False):
         try:

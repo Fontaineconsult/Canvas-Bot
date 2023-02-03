@@ -51,7 +51,7 @@ class PageNode(object):
         return f"{Fore.LIGHTGREEN_EX}<{str(self.__class__.__name__)} {self.url} - {failed}>{Style.RESET_ALL}".strip()
 
     def _init_node(self):
-
+        print(self.kwargs)
         while not self.node_init_failed:
 
             if self.page_manifest.exists(self.url, self):
@@ -64,7 +64,8 @@ class PageNode(object):
                 self.page_manifest.add_item_to_manifest(self)
                 self.root.tree_vis.add_node(self)
 
-            if "bypass_sort" not in self.kwargs.keys():
+            if self.kwargs.get("bypass_sort") is not True:
+                print("bypass sort TRUE", self.__class__.__name__)
                 if not self.node_init_failed:
                     self._sort_links()
                     self.create_child_nodes()
@@ -74,7 +75,6 @@ class PageNode(object):
     def _get_page_html(self):
         if "requests_get" in self.kwargs.keys():
             page_request = self.session.requests_get(self.url)
-
             if page_request:
                 self.raw_page_html = page_request.content
                 self.page_html = BeautifulSoup(page_request.content, "html.parser")
@@ -109,6 +109,7 @@ class PageNode(object):
                 self.page_html = self.page_html.find(attrs=self.scraper)
 
             if self.page_html is None:
+
                 print(f"{Fore.LIGHTRED_EX}No Selenium Page HTML {self.url}{Style.RESET_ALL}")
                 self.node_init_failed = True
 
@@ -116,7 +117,7 @@ class PageNode(object):
 
     def _sort_links(self):
         try:
-            print(self.url, self.page_html, "DSFHSDKJFHSDKJFHKJDS")
+
             href_links_to_identify = list(set([a_tag.get('href') for a_tag in self.page_html.find_all('a')]))
             img_links_to_identify = list(set([a_tag.get('src') for a_tag in self.page_html.find_all('img')]))
             video_tag = list(set([a_tag.get('src') for a_tag in self.page_html.find_all('video')]))
