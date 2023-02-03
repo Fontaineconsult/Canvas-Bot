@@ -137,7 +137,6 @@ class ContentCanvasFile(Content):
             self.page_html = page_request.content
 
     def check_resource_location(self):
-        print("BEFORE PARSE", self.url)
         parse_url = urlparse(self.url)
 
         if parse_url.path.split("/")[-1] in ["download", "preview"]:
@@ -158,16 +157,13 @@ class ContentCanvasFile(Content):
                            add_download,"",""))
 
     def get_data_from_header(self, location_url=None):
-        print("AFTER PARSE", self.resource_location)
         if location_url:
             header_url = location_url
             header_request = self.session.requests_header(header_url)
-            print("from location", header_request.status_code, header_request.headers)
-
         else:
             header_url = self.check_resource_location()
             header_request = self.session.requests_header(header_url)
-            print("from resource location", header_request.status_code, header_request.headers)
+
         if header_request:
             self.header = header_request.headers
             if header_request.status_code == 200:

@@ -76,14 +76,19 @@ def canvas_resource_identifier(local_session: CanvasSession,
 
                             if request.status_code == 302:
                                 if bad_redirects.match(request.headers['location']):
-                                    print("Bad Redirect", request.headers['location'], input_link, parent)
-                                    print("ID", parent.module_id)
                                     redirected_url = get_module_item(root.parent.canvas_course_id, parent.module_id, input_link.split("/")[-1])
                                     match_link = resource_node_regex.match(redirected_url)
-                                    print("CORRECT URL", redirected_url)
+                                    match_link_file = canvas_file_content_regex.match(redirected_url)
+
+                                    if not bool(match_link) or not bool(match_link_file):
+                                        return redirected_url
+
                                 else:
                                     match_link = resource_node_regex.match(request.headers['location'])
+
+
                                 if bool(match_link):
+
                                     if match_link.group() in page_manifest.keys():
                                         return None
 
@@ -110,6 +115,11 @@ def canvas_resource_identifier(local_session: CanvasSession,
                                     junk_manifest.append(input_link)
                                     junk_manifest.append(cleaned_link)
                                     return str(cleaned_link)
+
+
+
+
+
 
             match_link = resource_node_regex.match(input_link)
             if bool(match_link):

@@ -65,7 +65,7 @@ class PageNode(object):
                 self.root.tree_vis.add_node(self)
 
             if self.kwargs.get("bypass_sort") is not True:
-                print("bypass sort TRUE", self.__class__.__name__)
+
                 if not self.node_init_failed:
                     self._sort_links()
                     self.create_child_nodes()

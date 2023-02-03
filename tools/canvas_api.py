@@ -14,6 +14,7 @@ def get_module_item(course_id, module_id, item_id):
             return_url = urlunparse((parsed.scheme, parsed.netloc, "/".join(remove_api_path), parsed.params, parsed.query, parsed.fragment))
             return return_url
         if item_content.get("external_url"):
+            print("ZZOOOOMMM", item_content.get("external_url"))
             return item_content.get("external_url")
 
 
