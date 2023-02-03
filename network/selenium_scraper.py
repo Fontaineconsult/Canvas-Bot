@@ -8,8 +8,7 @@ from selenium.common.exceptions import WebDriverException, TimeoutException
 import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-
-
+from fake_useragent import UserAgent
 
 browser_options = webdriver.ChromeOptions()
 
@@ -17,6 +16,7 @@ dotenv_path = join(dirname(__file__), '.env')
 chrome_driver_path = join(dirname(__file__), 'chromedriver.exe')
 load_dotenv(dotenv_path)
 browser_options.headless = True
+
 # browser_options.add_argument("user-data-dir=C:\\Users\\913678186\\AppData\\Local\\Google\\Chrome\\User Data\\Selenium")
 
 prefs = {
@@ -25,14 +25,31 @@ prefs = {
 browser_options.add_experimental_option(
     "prefs", prefs
 )
-browser_options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36")
+
 browser_options.add_argument('log-level=3')
+# browser_options.add_argument('--headless')
+browser_options.add_argument("--incognito")
+browser_options.add_argument("--nogpu")
+browser_options.add_argument("--disable-gpu")
+browser_options.add_argument("--window-size=1280,1280")
+browser_options.add_argument("--no-sandbox")
+browser_options.add_argument("--enable-javascript")
+browser_options.add_experimental_option("excludeSwitches", ["enable-automation"])
+browser_options.add_experimental_option('useAutomationExtension', False)
+browser_options.add_argument('--disable-blink-features=AutomationControlled')
+browser_options.add_experimental_option("detach", True)
+
+
+ua = UserAgent()
+userAgent = ua.chrome
 
 class SeleniumDriver:
 
     def __init__(self):
 
         self.driver = webdriver.Chrome(chrome_driver_path, options=browser_options)
+        self.driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
+        self.driver.execute_cdp_cmd('Network.setUserAgentOverride', {"userAgent": userAgent})
         self.driver.set_page_load_timeout(10)
         self.logged_in = False
 
@@ -62,9 +79,13 @@ class SeleniumDriver:
             .send_keys(os.environ.get("canvas_login_password"))
         self.driver.find_element(By.XPATH,"//*[@id='login_form']/div[3]/div[2]/button").click()
 
-    def get_page(self, url: str, wait=None, max_timeout=10):
+    def get_page(self, url: str, wait=None, max_timeout=10, print_output=False):
         try:
             self.driver.get(url)
+
+            if print_output:
+                print(self.driver.page_source)
+
             if wait:
                 print(f"waiting {wait} seconds extra for ", url)
                 self.driver.implicitly_wait(wait)

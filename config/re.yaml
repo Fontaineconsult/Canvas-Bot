@@ -14,6 +14,10 @@ document_content_regex:
   - .*\.txt
   - .*\.zip
 
+bad_redirects_regex:
+  - https://sfsu.instructure.com/login
+  - https://canvas.sfsu.edu
+
 
 ignore_links_regex:
   - https://sfsu.instructure.com/courses/[0-9]{0,7}/(pages/|quizzes/|discussion_topics/|assignments/|announcements/|items/|modules/).*.[0-9]{0,7}
