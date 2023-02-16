@@ -68,6 +68,10 @@ web_video_resources_regex:
   - .*.instructuremedia.com/embed.*.
   - .*.tiktok.com/embed/.*.
   - .*.sfsu.mediasite.com/.*.
+  - .*.educreations.com/lesson/view/.*.
+  - .*.media_objects_iframe.*.
+
+
 
 
 video_file_resources_regex:

@@ -9,6 +9,7 @@ from bs4 import BeautifulSoup
 
 from sorters.sorter_re import mime_check_image, mime_check_document, mime_check_video, mime_check_audio
 from sorters.sorting_tools import get_mime_type
+from tools.canvas_api import get_file
 
 
 class ContentFile(Content):
@@ -101,14 +102,8 @@ class ContentCanvasFile(Content):
     def __init__(self, link: str, local_session: CanvasSession, parent, root):
         self.session = local_session
         self.url = link
-        self.page_html = None
-        self.alt_tag = None
-        self._get_page_html()
-        self.title = self.find_title()
-        self.resource_location = self.check_resource_location()
+        self.get_api_data()
         self.mime_type = None
-        self.get_data_from_header()
-        self.header = None
         Content.__init__(self, self.url, local_session, parent, root, self.title, self.mime_type, self.resource_location)
         self.set_documement_type()
 
@@ -117,6 +112,19 @@ class ContentCanvasFile(Content):
 
     def __str__(self):
         return f"( {self.__class__.__name__} - {self.check_resource_location()} - {self.title} )>"
+
+    def get_api_data(self):
+        parsed = urlparse(self.url)
+        file_id = parsed.path.split("/")[4]
+
+        file_info = get_file(file_id)
+        print("*********", file_id, self.url, parsed)
+        print("+_+_+_+_+_", file_info)
+
+        self.title = file_info['filename']
+        self.mime_type = file_info['content-type']
+        self.resource_location = file_info['url']
+
 
     def _get_page_html(self):
         parse_url = urlparse(self.url)

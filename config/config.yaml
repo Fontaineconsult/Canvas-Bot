@@ -23,7 +23,7 @@ filters:
   Announcement: {"class": "ic-item-row ic-announcement-row"} #list
   Assignment: {"id": "assignment_show"}
   Assignments: {"id": "ag-list"}
-  AssignmentsGroup: {"id": "assignment_group_upcoming"}
+  AssignmentsGroup: {"class": "item-group-condensed"}
   Discussion: {"id": "discussion_container"}
   Discussions: { "class": "discussions-v2__wrapper" }
   DiscussionsGroup: { "class": "ic-item-row ic-discussion-row" }

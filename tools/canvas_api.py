@@ -23,3 +23,10 @@ def get_module_item(course_id, module_id, item_id):
 
 
 
+def get_file(file_id):
+
+    api_url = f"https://sfsu.instructure.com/api/v1/files/{file_id}?access_token={os.environ.get('access_token')}"
+    item_get = requests.get(api_url)
+    return json.loads(item_get.content)
+
+

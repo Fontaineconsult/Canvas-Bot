@@ -78,9 +78,10 @@ def canvas_resource_identifier(local_session: CanvasSession,
                                 if bad_redirects.match(request.headers['location']):
                                     redirected_url = get_module_item(root.parent.canvas_course_id, parent.module_id, input_link.split("/")[-1])
                                     match_link = resource_node_regex.match(redirected_url)
-                                    match_link_file = canvas_file_content_regex.match(redirected_url)
 
-                                    if not bool(match_link) or not bool(match_link_file):
+                                    match_link_file = canvas_file_content_regex.match(redirected_url)
+                                    print("__________", redirected_url)
+                                    if not bool(match_link) or bool(match_link_file):
                                         return redirected_url
 
                                 else:

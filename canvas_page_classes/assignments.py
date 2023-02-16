@@ -34,6 +34,8 @@ class Assignments(PageNode):
 
     def _build_modules(self):
 
+
+
         self.kwargs.pop("bypass_sort")
         context_modules = self.page_html.find_all(attrs=filters['AssignmentsGroup'])
         for count, each_module in enumerate(context_modules):

@@ -301,7 +301,6 @@ class ContentExtractor(CanvasCourseWrapper):
                     is_hidden=item.is_hidden,
                     content_type=item.__class__.__name__,
                     mime_type=item.mime_type,
-                    alt_tag_present=item.alt_tag,
                     downloadable=item.downloadable,
                     order=item.order,
                     title_path=build_path(item, "title"),
